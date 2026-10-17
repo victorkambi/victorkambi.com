@@ -1,598 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Victor Kambi — Design & Engineering</title>
-<meta name="description" content="Portfolio of Victor Kambi, Design & Engineering — building backend systems and design systems in Kenya.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#FFFFFF;
-    --bg-elevated:#FFFFFF;
-    --text:#000000;
-    --text-muted:rgba(0,0,0,.55);
-    --border:rgba(0,0,0,.12);
-    --accent:rgba(0,0,0,.5);
-    --accent-soft:rgba(0,0,0,.08);
-    --font-sans:'Inter',system-ui,sans-serif;
-  }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --bg:#000000;
-      --bg-elevated:#1E1E1E;
-      --text:#FFFFFF;
-      --text-muted:rgba(255,255,255,.55);
-      --border:rgba(255,255,255,.14);
-      --accent:rgba(255,255,255,.5);
-      --accent-soft:rgba(255,255,255,.08);
-    }
-  }
-  /* Manual override always wins over system preference */
-  html.dark{
-    --bg:#000000;
-    --bg-elevated:#1E1E1E;
-    --text:#FFFFFF;
-    --text-muted:rgba(255,255,255,.55);
-    --border:rgba(255,255,255,.14);
-    --accent:rgba(255,255,255,.5);
-    --accent-soft:rgba(255,255,255,.08);
-  }
-  html.light{
-    --bg:#FFFFFF;
-    --bg-elevated:#FFFFFF;
-    --text:#000000;
-    --text-muted:rgba(0,0,0,.55);
-    --border:rgba(0,0,0,.12);
-    --accent:rgba(0,0,0,.5);
-    --accent-soft:rgba(0,0,0,.08);
-  }
-  *{box-sizing:border-box;}
-  html{font-size:16px;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:var(--font-sans);
-    font-weight:500;
-    font-size:0.875rem; /* ~ Tailwind text-sm */
-    line-height:1.6;
-    transition:background .25s ease, color .25s ease;
-    -webkit-font-smoothing:antialiased;
-  }
-  a{color:inherit;text-decoration:none;}
-  ::selection{background:var(--accent-soft);color:var(--accent);}
-
-  .wrap{
-    max-width:36.25rem;
-    margin:0 auto;
-    padding:0 1.5rem;
-  }
-
-  /* Identity block */
-  .identity{
-    padding-top:3rem;
-  }
-  @media (min-width:64rem){
-    .identity{padding-top:4.5rem;}
-  }
-  .name{
-    font-size:0.875rem;
-    font-weight:500;
-    letter-spacing:-0.01em;
-    margin:0 0 0.125rem;
-  }
-  .role{
-    font-size:0.875rem;
-    font-weight:500;
-    color:var(--text-muted);
-    margin:0 0 1.75rem;
-  }
-  .role a, #about > p a{color:rgba(0,0,0,.73);position:relative;z-index:1;transition:color .15s ease;text-decoration:underline;text-decoration-color:rgba(0,0,0,.25);text-underline-offset:3px;text-decoration-thickness:1.5px;}
-  html.dark .role a, html.dark #about > p a{color:rgba(255,255,255,.73);text-decoration-color:rgba(255,255,255,.25);}
-  .role a::before, #about > p a::before{
-    content:'';
-    position:absolute;
-    inset:-0.125rem -0.25rem;
-    background:var(--bg-elevated);
-    border-radius:0.375rem;
-    border:1px solid var(--border);
-    box-shadow:0 4px 16px rgba(0,0,0,.10),0 1px 3px rgba(0,0,0,.08);
-    opacity:0;
-    z-index:-1;
-    transition:opacity .2s ease;
-    pointer-events:none;
-  }
-  html.dark .role a::before, html.dark #about > p a::before{box-shadow:0 0 0 1px rgba(255,255,255,.08),0 4px 18px rgba(0,0,0,.55);}
-  .role a:hover, #about > p a:hover{color:var(--accent);text-decoration:none;}
-  .role a:hover::before, #about > p a:hover::before{opacity:1;}
-
-  /* Nav row */
-  nav.site{
-    display:flex;
-    align-items:center;
-    gap:1.125rem;
-    padding:0 0 1.25rem;
-    font-size:0.875rem;
-    font-weight:500;
-    color:var(--text-muted);
-  }
-  nav.site a{
-    position:relative;
-    padding-bottom:0.375rem;
-    transition:color .15s ease;
-    cursor:pointer;
-  }
-  nav.site a:hover, nav.site a.active{color:var(--text);}
-  nav.site a::after{
-    content:'';
-    position:absolute;
-    left:0; right:0; bottom:0;
-    height:1px;
-    background:var(--text);
-    transform:scaleX(0);
-    transform-origin:left;
-    transition:transform .25s cubic-bezier(.16,1,.3,1);
-  }
-  nav.site a.active::after{transform:scaleX(1);}
-  nav.site .spacer{flex:1;}
-  #theme-toggle{
-    /* Hidden — theme now follows system preference automatically.
-       Toggle markup + JS logic kept intact in case manual control
-       is re-enabled later; just flip this back to remove display:none. */
-    display:none;
-    background:none;
-    border:1px solid var(--border);
-    border-radius:1.25rem;
-    width:2.375rem;height:1.3125rem;
-    position:relative;
-    cursor:pointer;
-    padding:0;
-    flex-shrink:0;
-  }
-  #theme-toggle::after{
-    content:'';
-    position:absolute;
-    top:0.125rem;left:0.125rem;
-    width:0.9375rem;height:0.9375rem;
-    border-radius:50%;
-    background:var(--accent);
-    transition:transform .2s ease;
-  }
-  html.dark #theme-toggle::after{transform:translateX(1.0625rem);}
-
-  /* Tab panels */
-  .tab-panel{padding:1.25rem 0 0;}
-  .tab-panel.hidden-panel{display:none;}
-  .tab-panel.focus-out{animation:focusOut .38s cubic-bezier(.45,0,.4,1) forwards;}
-  .tab-panel.focus-in{animation:focusIn .65s cubic-bezier(.19,1,.22,1);}
-  @keyframes focusOut{
-    from{opacity:1; filter:blur(0); transform:scale(1) translateY(0);}
-    to{opacity:0; filter:blur(5px); transform:scale(0.985) translateY(-0.25rem);}
-  }
-  @keyframes focusIn{
-    from{opacity:0; filter:blur(5px); transform:scale(0.985) translateY(0.25rem);}
-    to{opacity:1; filter:blur(0); transform:scale(1) translateY(0);}
-  }
-  #work{padding-bottom:3.5rem;}
-  #about{padding-bottom:3.5rem;}
-  #contact{padding-bottom:3.5rem;}
-
-  .section-title{
-    font-size:0.875rem;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    color:var(--text-muted);
-    margin:0 0 0.25rem;
-  }
-
-  /* Work list — Gavin-style stacked link rows */
-  .hover-list{position:relative;}
-  .hover-highlight{
-    position:absolute;
-    left:0;top:0;
-    width:0;height:0;
-    background:var(--bg-elevated);
-    border-radius:0.875rem;
-    box-shadow:0 4px 16px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.08);
-    opacity:0;
-    pointer-events:none;
-    z-index:0;
-    transition:
-      transform .55s cubic-bezier(.34,1.56,.64,1),
-      width .55s cubic-bezier(.34,1.56,.64,1),
-      height .55s cubic-bezier(.34,1.56,.64,1),
-      opacity .2s ease;
-  }
-  html.dark .hover-highlight{
-    box-shadow:0 0 0 1px rgba(255,255,255,.08), 0 4px 18px rgba(0,0,0,.55);
-  }
-  .row{
-    position:relative;
-    z-index:1;
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    gap:1rem;
-    padding:0.875rem 0.75rem;
-    margin:0 -0.75rem;
-  }
-  .about-sub .row{padding-top:0.25rem;padding-bottom:0.25rem;}
-  a.row{cursor:pointer;}
-  a.row:not(.row-compact):hover .title{color:var(--accent);}
-  .row .title{
-    font-size:0.875rem;
-    font-weight:500;
-    color:var(--text);
-    transition:color .15s ease;
-  }
-  .row .meta{
-    font-size:0.875rem;
-    font-weight:500;
-    color:var(--text-muted);
-    margin-top:0.125rem;
-  }
-  .row .year{
-    font-size:0.875rem;
-    font-weight:500;
-    color:var(--text-muted);
-    white-space:nowrap;
-    flex-shrink:0;
-  }
-
-  /* Compact work rows: box hugs the title text, no divider */
-  .row-compact{
-    display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:0.1875rem;
-    width:max-content;
-    max-width:100%;
-    justify-content:normal;
-    border-bottom:none;
-    padding:0.5rem 0.75rem;
-    margin:0.125rem -0.75rem;
-  }
-  .row-compact .year{
-    flex-shrink:initial;
-    white-space:normal;
-  }
-
-  /* Work items: prominent text, subtle underlined */
-  #work .row-compact .title{
-    color:var(--text);
-    text-decoration:underline;
-    text-decoration-color:var(--border);
-    text-decoration-thickness:1px;
-    text-underline-offset:3px;
-  }
-
-  /* About */
-  #about > p{
-    max-width:54ch;
-    margin:0 0 0.875rem;
-  }
-  #about > p:last-child{margin-bottom:0;}
-
-  .about-sub{
-    margin-top:2.25rem;
-  }
-  .sub-label{
-    font-size:0.875rem;
-    font-weight:500;
-    color:var(--text-muted);
-    margin:0 0 0.25rem;
-  }
-  .lang-line{
-    font-size:0.875rem;
-    margin:0;
-    display:flex;
-    align-items:baseline;
-    flex-wrap:wrap;
-    gap:0.375rem;
-  }
-  .lang-name{
-    color:var(--text);
-    font-weight:500;
-  }
-  .lang-level{
-    color:var(--text-muted);
-    font-weight:500;
-    font-size:0.875rem;
-  }
-  .lang-dot{color:var(--text-muted);}
-  .skills-list{
-    font-size:0.875rem;
-    font-weight:500;
-    color:var(--text-muted);
-    margin:0;
-    line-height:1.9;
-    text-wrap:pretty;
-  }
-  .skill-key{color:var(--text);font-weight:500;}
-
-  .edu-row{
-    display:flex;
-    justify-content:space-between;
-    gap:1rem;
-    font-size:0.875rem;
-    padding:0.25rem 0;
-  }
-  .edu-row .title{font-weight:500;}
-  .edu-row .school{color:var(--text-muted);font-weight:500;font-size:0.875rem;margin-top:0.125rem;}
-  .edu-row .yr{
-    font-size:0.875rem;
-    font-weight:500;
-    color:var(--text-muted);
-    white-space:nowrap;
-  }
-
-  /* Contact */
-  #contact .row:hover .title{color:var(--accent);}
-
-  footer{
-    padding:1.5rem 0 3rem;
-    font-size:0.75rem;
-    font-weight:500;
-    color:var(--text-muted);
-    display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:0;
-  }
-  #local-time{font-variant-numeric:tabular-nums;}
-
-  @media (prefers-reduced-motion: reduce){
-    *{transition:none !important;animation:none !important;}
-  }
-</style>
-</head>
-<body>
-
-<div class="wrap">
-
-  <div class="identity">
-    <p class="name">Victor Kambi</p>
-    <p class="role">Design &amp; Engineering at <a href="https://tajji.io/" target="_blank" rel="noopener">Tajji</a></p>
-  </div>
-
-  <nav class="site">
-    <a data-tab="work" class="active">Work</a>
-    <a data-tab="about">About</a>
-    <a data-tab="contact">Contact</a>
-    <span class="spacer"></span>
-    <button id="theme-toggle" aria-label="Toggle dark mode"></button>
-  </nav>
-
-  <section id="work" class="tab-panel hover-list">
-    <a class="row row-compact" href="#" target="_blank" rel="noopener">
-      <span class="title">BomaOS Console</span>
-      <span class="year">2026</span>
-    </a>
-    <a class="row row-compact" href="#" target="_blank" rel="noopener">
-      <span class="title">Jirani Portal</span>
-      <span class="year">2026</span>
-    </a>
-    <a class="row row-compact" href="https://www.canva.com/design/DAHBHEFMHdI/AhBAxnrkOYuX81kXOo3HcA/view" target="_blank" rel="noopener">
-      <span class="title">Tajji Investor Deck pre-seed round</span>
-      <span class="year">2026</span>
-    </a>
-    <a class="row row-compact" href="https://play.google.com/store/apps/details?id=io.tajji.bomaos" target="_blank" rel="noopener">
-      <span class="title">BomaOS Mobile v1.0</span>
-      <span class="year">2025</span>
-    </a>
-    <a class="row row-compact" href="https://www.tajji.com" target="_blank" rel="noopener">
-      <span class="title">Tajji Website Revamped</span>
-      <span class="year">2025</span>
-    </a>
-    <a class="row row-compact" href="https://github.com/kambiv/Walenje" target="_blank" rel="noopener">
-      <span class="title">Walenje Mobile Pre-Alpha</span>
-      <span class="year">2025</span>
-    </a>
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import SiteLayout from '../layouts/SiteLayout.astro';
+const projects = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const experiments = await getCollection('lab');
+---
+<SiteLayout active="home">
+  <section class="hero" aria-labelledby="intro-title">
+    <p class="eyebrow">Computer scientist · Product designer-engineer · CTO at Tajji Ltd.</p>
+    <h1 id="intro-title">I design the details.<br /><em>Then I build the product.</em></h1>
+    <p class="lede">I’m Victor, a computer scientist and product designer-engineer. At Tajji, I help design and build BomaOS and Jirani, products now live on Google Play.</p>
+    <a class="text-link" href="/about">A little about me <span aria-hidden="true">↗</span></a>
   </section>
 
-  <section id="about" class="tab-panel hidden-panel">
-    <p>
-      I'm currently building the backend, design system, and product experience at <a href="https://tajji.io/" target="_blank" rel="noopener">Tajji</a>, a real estate platform rethinking property management across Africa.
-    </p>
-    <p>
-      Previously, I designed and developed responsive websites and digital campaigns for consumer brands at <a href="https://emmerce.io/" target="_blank" rel="noopener">Emmerce</a>.
-    </p>
-    <p>
-      My approach to design is making the mechanical parts have feeling, this makes interaction enjoyable and fun without compromising on performance and efficiency
-    </p>
-    <p>
-      Outside work, you'll usually find me reading philosophy, drawing, or watching and reviewing films.
-    </p>
-
-    <div class="about-sub">
-      <p class="sub-label">Experience</p>
-      <div class="row">
-        <div>
-          <div class="title">Software &amp; Design Engineer</div>
-          <div class="meta">Tajji Ltd, Eldoret</div>
-        </div>
-        <div class="year">2024–Now</div>
+  <section class="work" aria-labelledby="work-title">
+    <div class="section-head"><div><p class="eyebrow">Selected work</p><h2 id="work-title">Products, systems, and visual work</h2></div><p class="section-note">A small index of shipped work and studies.</p></div>
+    <div class="controls">
+      <div class="filters" role="group" aria-label="Filter projects">
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="product" aria-pressed="false">Product</button>
+        <button type="button" data-filter="visual" aria-pressed="false">Visual</button>
+        <button type="button" data-filter="lab" aria-pressed="false">Lab</button>
       </div>
-      <div class="row">
-        <div>
-          <div class="title">Frontend Engineer &amp; Junior Designer</div>
-          <div class="meta">Tajji Ltd, Nairobi</div>
-        </div>
-        <div class="year">2023–2024</div>
-      </div>
-      <div class="row">
-        <div>
-          <div class="title">Frontend Engineer Intern</div>
-          <div class="meta">Emmerce Ltd, Nairobi</div>
-        </div>
-        <div class="year">2022</div>
+      <div class="views" role="group" aria-label="Project layout">
+        <button type="button" data-view="index" aria-pressed="true">Index</button>
+        <button type="button" data-view="gallery" aria-pressed="false">Gallery</button>
       </div>
     </div>
-
-    <div class="about-sub">
-      <p class="sub-label">Education</p>
-      <div class="edu-row">
-        <div>
-          <div class="title">BSc Computer Science</div>
-          <div class="school">Moi University, Eldoret</div>
-        </div>
-        <div class="yr">2018–2023</div>
-      </div>
-      <div class="edu-row">
-        <div>
-          <div class="title">UX Design Pathway</div>
-          <div class="school">IBM SkillsBuild, Nairobi</div>
-        </div>
-        <div class="yr">2026–Now</div>
-      </div>
+    <div class="project-index" data-project-list>
+      {projects.map((project, index) => <a class="project-row" href={`/work/${project.data.slug}`} data-kind={project.data.kind} data-project-item>
+        <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+        <span class="project-main"><span class="project-title">{project.data.title}</span><span class="project-line">{project.data.oneLiner}</span></span>
+        <span class="project-tags">{project.data.tags.slice(0, 2).map((tag) => <span>{tag}</span>)}</span>
+        <span class="project-year">{project.data.year}</span>
+      </a>)}
+      {experiments.map((experiment, index) => <a class="project-row lab-row" href={`/lab/${experiment.data.slug}`} data-kind="lab" data-project-item hidden>
+        <span class="project-number">L{String(index + 1).padStart(2, '0')}</span><span class="project-main"><span class="project-title">{experiment.data.title}</span><span class="project-line">{experiment.data.summary}</span></span><span class="project-tags"><span>Lab</span></span><span class="project-year">{experiment.data.year}</span>
+      </a>)}
     </div>
-
-    <div class="about-sub">
-      <p class="sub-label">Languages</p>
-      <p class="lang-line">
-        <span class="lang-name">English</span><span class="lang-level">(native)</span>
-        <span class="lang-dot">·</span>
-        <span class="lang-name">Swahili</span><span class="lang-level">(native)</span>
-      </p>
+    <div class="project-gallery" data-project-gallery>
+      {projects.map((project) => <a class="gallery-card" href={`/work/${project.data.slug}`} data-kind={project.data.kind} data-project-item>
+        <Image src={project.data.cover} alt="" width={project.data.cover.width} height={project.data.cover.height} loading="lazy" />
+        <span class="gallery-caption"><span>{project.data.title}</span><span>{project.data.year}</span></span>
+      </a>)}
+      {experiments.map((experiment) => <a class="gallery-card lab-row" href={`/lab/${experiment.data.slug}`} data-kind="lab" data-project-item hidden>
+        <span class="lab-art" aria-hidden="true">{experiment.data.title.slice(0, 1)}</span><span class="gallery-caption"><span>{experiment.data.title}</span><span>{experiment.data.year}</span></span>
+      </a>)}
     </div>
-
-    <div class="about-sub">
-      <p class="sub-label">Skills</p>
-      <div class="skills-list">
-        <div><span class="skill-key">Programming</span>: Kotlin, Kotlin Multiplatform, Compose Multiplatform, Java, TypeScript, JavaScript, Swift, SQL</div>
-        <div><span class="skill-key">Design</span>: Figma, Affinity, Miro, Framer, Editorial Design, Design Systems, Prototyping, Accessibility</div>
-        <div><span class="skill-key">Backend</span>: Spring Boot, Node.js, Temporal, PostgreSQL, Redis, Docker, Kubernetes, OIDC, OAuth2</div>
-        <div><span class="skill-key">Frontend</span>: React, Next.js, Vue.js, SvelteKit, Tailwind</div>
-      </div>
-    </div>
+    <p class="empty-state" data-empty hidden>No projects in this filter yet.</p>
   </section>
 
-  <section id="contact" class="tab-panel hidden-panel hover-list">
-    <a class="row" href="mailto:dev.kambi@gmail.com">
-      <div class="title">Email</div>
-      <div class="year">dev.kambi@gmail.com</div>
-    </a>
-    <a class="row" href="https://github.com/kambiv" target="_blank" rel="noopener">
-      <div class="title">GitHub</div>
-      <div class="year">github.com/kambiv</div>
-    </a>
-    <a class="row" href="https://victorkambi.com" target="_blank" rel="noopener">
-      <div class="title">Portfolio</div>
-      <div class="year">victorkambi.com</div>
-    </a>
-  </section>
-
-  <footer>
-    <div>Cultivate diligently</div>
-    <div id="local-time"></div>
-  </footer>
-
-</div>
+  <section class="lab-teaser"><div><p class="eyebrow">Playground</p><h2>Small questions, made interactive.</h2><p>Interface studies and experiments live in the lab.</p></div><a class="text-link" href="/lab">Visit the lab <span aria-hidden="true">↗</span></a></section>
+  <section class="contact" id="contact"><p class="eyebrow">Have a project in mind?</p><h2>Let’s make something useful.</h2><a href="mailto:dev.kambi@gmail.com">dev.kambi@gmail.com <span aria-hidden="true">↗</span></a></section>
+</SiteLayout>
 
 <script>
-  const toggle = document.getElementById('theme-toggle');
-  const root = document.documentElement;
-  const media = window.matchMedia('(prefers-color-scheme: dark)');
-
-  // Start in whichever mode the system is currently in
-  root.classList.add(media.matches ? 'dark' : 'light');
-
-  // Keep following the system, unless the visitor has clicked the toggle
-  let manualOverride = false;
-  media.addEventListener('change', (e) => {
-    if (manualOverride) return;
-    root.classList.remove('dark', 'light');
-    root.classList.add(e.matches ? 'dark' : 'light');
-  });
-
-  toggle.addEventListener('click', () => {
-    manualOverride = true;
-    root.classList.toggle('dark');
-    root.classList.toggle('light');
-  });
-
-  // Gavin-style hover highlight: a box that glides between list rows
-  document.querySelectorAll('.hover-list').forEach((container) => {
-    const highlight = document.createElement('div');
-    highlight.className = 'hover-highlight';
-    container.prepend(highlight);
-
-    const rows = container.querySelectorAll('.row');
-
-    rows.forEach((row) => {
-      row.addEventListener('mouseenter', () => {
-        highlight.style.width = row.offsetWidth + 'px';
-        highlight.style.height = row.offsetHeight + 'px';
-        highlight.style.transform = `translate(${row.offsetLeft}px, ${row.offsetTop}px)`;
-        highlight.style.opacity = '1';
-      });
-    });
-
-    container.addEventListener('mouseleave', () => {
-      highlight.style.opacity = '0';
-    });
-  });
-
-  // Tabbed nav: one panel visible at a time.
-  // Current panel drifts back and blurs out of focus, then the new panel
-  // arrives blurred and sharpens into focus — a camera-style focus pull.
-  const navLinks = document.querySelectorAll('nav.site a[data-tab]');
-  const panels = document.querySelectorAll('.tab-panel');
-  const EXIT_MS = 380;
-  let switching = false;
-
-  function showPanel(targetId) {
-    panels.forEach((panel) => {
-      panel.classList.remove('focus-out', 'focus-in');
-      if (panel.id === targetId) {
-        panel.classList.remove('hidden-panel');
-        void panel.offsetWidth; // restart animation
-        panel.classList.add('focus-in');
-      } else {
-        panel.classList.add('hidden-panel');
-      }
-    });
+  const filters = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+  const items = [...document.querySelectorAll<HTMLElement>('[data-project-item]')];
+  const gallery = document.querySelector<HTMLElement>('[data-project-gallery]');
+  const index = document.querySelector<HTMLElement>('[data-project-list]');
+  const empty = document.querySelector<HTMLElement>('[data-empty]');
+  const views = [...document.querySelectorAll<HTMLButtonElement>('[data-view]')];
+  function setFilter(kind: string, updateUrl: boolean) {
+    filters.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.filter === kind)));
+    let visible = 0;
+    items.forEach((item) => { const show = kind === 'all' || item.dataset.kind === kind; item.hidden = !show; if (show) visible++; });
+    if (empty) empty.hidden = visible > 0;
+    if (updateUrl) { const url = new URL(location.href); if (kind === 'all') url.searchParams.delete('kind'); else url.searchParams.set('kind', kind); history.replaceState(null, '', url); }
   }
-
-  navLinks.forEach((link) => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetId = link.dataset.tab;
-      if (switching || link.classList.contains('active')) return;
-
-      const current = document.querySelector('.tab-panel:not(.hidden-panel)');
-      switching = true;
-      navLinks.forEach((l) => l.classList.toggle('active', l === link));
-
-      if (current) {
-        current.classList.add('focus-out');
-        setTimeout(() => {
-          showPanel(targetId);
-          switching = false;
-        }, EXIT_MS);
-      } else {
-        showPanel(targetId);
-        switching = false;
-      }
-    });
-  });
-  // Live clock — Victor's local time, Africa/Nairobi (UTC+3)
-  const timeEl = document.getElementById('local-time');
-  const clockFormatter = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'Africa/Nairobi',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  });
-  function updateClock() {
-    timeEl.textContent = `${clockFormatter.format(new Date())} UTC-3`;
+  function setView(view: string) {
+    gallery?.classList.toggle('active', view === 'gallery');
+    index?.classList.toggle('active', view === 'index');
+    views.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.view === view)));
   }
-  updateClock();
-  setInterval(updateClock, 1000);
+  filters.forEach((button) => button.addEventListener('click', () => setFilter(button.dataset.filter ?? 'all', true)));
+  views.forEach((button) => button.addEventListener('click', () => setView(button.dataset.view ?? 'index')));
+  const initial = new URL(location.href).searchParams.get('kind');
+  if (initial && ['product', 'visual', 'lab'].includes(initial)) setFilter(initial, false);
+  setView('index');
 </script>
 
-</body>
-</html>
+<style>
+  .hero { padding-block: clamp(4rem, 10vw, 9rem) clamp(4rem, 8vw, 7rem); max-width: 64rem; }
+  .eyebrow { margin:0 0 .8rem; color:var(--color-muted); font-size:var(--text-xs); letter-spacing:.1em; text-transform:uppercase; font-weight:650; }
+  h1,h2,p { margin-top:0; }
+  h1 { margin-bottom:1.5rem; font:400 var(--text-display)/.98 var(--font-display); letter-spacing:-.065em; }
+  h1 em { color:var(--color-accent); font-style:normal; }
+  .lede { max-width:47rem; margin-bottom:1rem; color:var(--color-muted); font-size:clamp(1.05rem, 1.6vw, 1.25rem); }
+  .text-link { display:inline-flex; gap:.5rem; font-size:var(--text-sm); font-weight:650; text-decoration-thickness:1px; }
+  .section-head { display:flex; justify-content:space-between; align-items:end; gap:2rem; border-bottom:1px solid var(--color-line); padding-bottom:1.2rem; }
+  .section-head h2,.lab-teaser h2,.contact h2 { margin:0; font:400 var(--text-lg)/1.2 var(--font-display); letter-spacing:-.035em; }
+  .section-note { max-width:19rem; margin:0; color:var(--color-muted); font-size:var(--text-sm); }
+  .controls { display:flex; justify-content:space-between; align-items:center; padding-block:1rem; gap:1rem; }
+  .filters,.views { display:flex; gap:.35rem; }
+  .filters button,.views button { border:1px solid transparent; border-radius:99px; padding:.42rem .75rem; background:transparent; color:var(--color-muted); font:inherit; font-size:var(--text-sm); cursor:pointer; }
+  .filters button[aria-pressed="true"],.views button[aria-pressed="true"] { border-color:var(--color-line); background:var(--color-surface); color:var(--color-text); }
+  .project-index { display:block; }
+  .project-index:not(.active) { display:none; }
+  .project-row { display:grid; grid-template-columns:3.5rem minmax(0,1fr) minmax(9rem, .32fr) 3.5rem; gap:1rem; align-items:center; padding:1.25rem .5rem; border-top:1px solid var(--color-line); text-decoration:none; }
+  .project-row:hover { background:var(--color-surface); }
+  .project-number,.project-year,.project-tags { color:var(--color-muted); font-size:var(--text-sm); font-variant-numeric:tabular-nums; }
+  .project-main { display:grid; gap:.2rem; }
+  .project-title { font-size:1.06rem; font-weight:600; letter-spacing:-.02em; }
+  .project-line { color:var(--color-muted); font-size:var(--text-sm); }
+  .project-tags { display:flex; gap:.4rem; flex-wrap:wrap; }
+  .project-tags span { border:1px solid var(--color-line); padding:.15rem .4rem; border-radius:99px; font-size:.68rem; }
+  .project-year { text-align:right; }
+  .project-gallery { display:none; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+  .project-gallery.active { display:grid; }
+  .gallery-card { background:var(--color-surface); border:1px solid var(--color-line); border-radius:var(--radius-md); overflow:hidden; text-decoration:none; }
+  .gallery-card img,.lab-art { display:block; width:100%; aspect-ratio:1.58; object-fit:cover; background:var(--color-line); }
+  .lab-art { display:grid; place-items:center; color:var(--color-accent); font:400 7rem var(--font-display); }
+  .gallery-caption { display:flex; justify-content:space-between; padding:.8rem; gap:1rem; font-size:var(--text-sm); }
+  .gallery-caption span:last-child { color:var(--color-muted); }
+  .empty-state { padding:2rem 0; color:var(--color-muted); }
+  .lab-teaser { margin-top:var(--space-6); padding-block:2rem; border-top:1px solid var(--color-line); border-bottom:1px solid var(--color-line); display:flex; align-items:end; justify-content:space-between; gap:2rem; }
+  .lab-teaser p:not(.eyebrow) { color:var(--color-muted); margin:.8rem 0 0; }
+  .contact { padding-block:var(--space-6) 1rem; }
+  .contact h2 { margin-bottom:1rem; }
+  .contact > a { color:var(--color-accent); font-size:1.1rem; font-weight:600; }
+  @media(max-width: 42rem) { .section-head { align-items:start; flex-direction:column; gap:.8rem; } .project-row { grid-template-columns:2rem minmax(0,1fr) 3rem; gap:.6rem; } .project-tags { display:none; } .project-gallery { grid-template-columns:1fr; } .controls { align-items:start; flex-direction:column; } .lab-teaser { align-items:start; flex-direction:column; } }
+</style>
