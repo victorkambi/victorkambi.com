@@ -29,8 +29,10 @@ repository in GitHub:
 2. Push to `main` and check the site at its default Pages URL.
 3. For the domain cutover, remove `victorkambi.com` from the old Pages
    repository, then set it as this repository's custom domain. Keep the old
-   `victorkambi.github.io` Pages site enabled; it will serve the immediate meta
-   refresh after the domain is moved.
+   `victorkambi.github.io` Pages site enabled.
+4. After `victorkambi.com` serves this Astro site, push the prepared redirect
+   commit to the old repository. It removes the old CNAME and changes the
+   `victorkambi.github.io` page to the immediate meta refresh.
 
 GitHub Pages custom domains for custom Actions workflows are configured in
 repository settings; a `CNAME` file is not used by this workflow. Keep the
