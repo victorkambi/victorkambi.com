@@ -1,0 +1,63 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+export async function getStaticPaths() {
+  const projects = await getCollection('work');
+  return projects.map((project) => ({ params: { slug: project.data.slug }, props: { project } }));
+}
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+<SiteLayout title={`${project.data.title} — Victor Kambi`} description={project.data.oneLiner}>
+  <article class="case-study">
+    <a class="back" href="/">← Back to work</a>
+    <header class="case-head">
+      <p class="eyebrow">{project.data.kind} · {project.data.year} · {project.data.platform}</p>
+      <h1>{project.data.title}</h1>
+      <p class="intro">{project.data.oneLiner}</p>
+      <div class="tags">{project.data.tags.map((tag) => <span>{tag}</span>)}</div>
+    </header>
+    <figure class="cover">
+      <Image src={project.data.cover} alt={`${project.data.title} — placeholder artwork; replace with product imagery.`} width={project.data.cover.width} height={project.data.cover.height} loading="eager" />
+      <figcaption>Placeholder artwork · replace with a supplied product image.</figcaption>
+    </figure>
+    <dl class="facts"><div><dt>Status</dt><dd>{project.data.status}</dd></div><div><dt>Role</dt><dd>{project.data.role}</dd></div><div><dt>Platform</dt><dd>{project.data.platform}</dd></div><div><dt>Links</dt><dd>{project.data.links.length ? project.data.links.map((link) => <a href={link.href} target="_blank" rel="noreferrer">{link.label} ↗</a>) : <span>TODO: add verified public product link</span>}</dd></div></dl>
+    <div class="article-layout"><aside>Case study<br />{project.data.title}</aside><div class="prose"><Content /></div></div>
+    {project.data.gallery.length > 0 && <section class="gallery" aria-label="Project gallery">
+      <h2>Gallery</h2>
+      {project.data.gallery.map((image) => <figure><button class="shot" type="button" data-lightbox data-src={image.src.src} data-alt={image.alt} aria-label={`Open image: ${image.alt}`}><Image src={image.src} alt={image.alt} width={image.src.width} height={image.src.height} loading="lazy" /></button>{image.caption && <figcaption>{image.caption}</figcaption>}</figure>)}
+    </section>}
+  </article>
+  <dialog class="lightbox" aria-label="Image preview"><button class="close" type="button" data-close aria-label="Close image preview">Close ×</button><img alt="" /><p></p></dialog>
+</SiteLayout>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('.lightbox');
+  const preview = dialog?.querySelector('img');
+  const caption = dialog?.querySelector('p');
+  document.querySelectorAll<HTMLButtonElement>('[data-lightbox]').forEach((button) => button.addEventListener('click', () => {
+    if (!dialog || !preview) return;
+    preview.src = button.dataset.src ?? '';
+    preview.alt = button.dataset.alt ?? '';
+    if (caption) caption.textContent = button.dataset.alt ?? '';
+    dialog.showModal();
+  }));
+  document.querySelector('[data-close]')?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+</script>
+
+<style>
+  .case-study { padding-top:3rem; }
+  .back { color:var(--color-muted); font-size:var(--text-sm); text-decoration:none; }
+  .case-head { padding-block:3rem 2rem; max-width:60rem; }
+  .eyebrow { color:var(--color-muted); font-size:var(--text-xs); text-transform:uppercase; letter-spacing:.1em; }
+  h1 { margin:.6rem 0 1rem; font:400 clamp(2.8rem,8vw,6rem)/.98 var(--font-display); letter-spacing:-.06em; }
+  .intro { max-width:48rem; color:var(--color-muted); font-size:clamp(1.1rem,2vw,1.45rem); }
+  .tags { display:flex; gap:.5rem; margin-top:1.5rem; }.tags span { border:1px solid var(--color-line); border-radius:99px; padding:.25rem .65rem; font-size:var(--text-xs); }
+  figure { margin:0; }.cover { background:var(--color-surface); border:1px solid var(--color-line); padding:.5rem; }.cover img { display:block; width:100%; height:auto; aspect-ratio:1.58; object-fit:cover; }.cover figcaption,.gallery figcaption { padding:.55rem 0; color:var(--color-muted); font-size:var(--text-xs); }
+  .facts { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; padding:1.5rem 0; border-bottom:1px solid var(--color-line); }.facts div { min-width:0; }.facts dt { color:var(--color-muted); font-size:var(--text-xs); text-transform:uppercase; letter-spacing:.08em; }.facts dd { margin:.35rem 0 0; font-size:var(--text-sm); }.facts a { display:block; color:var(--color-accent); }
+  .article-layout { display:grid; grid-template-columns:13rem minmax(0, 46rem); gap:3rem; padding-block:3rem; }.article-layout aside { color:var(--color-muted); font-size:var(--text-sm); }.prose :global(h2) { margin:2.8rem 0 .75rem; font:400 1.6rem/1.2 var(--font-display); letter-spacing:-.03em; }.prose :global(p) { color:var(--color-muted); }.prose :global(p:first-child) { margin-top:0; }.prose :global(a) { color:var(--color-accent); }
+  .gallery { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.25rem; }.gallery h2 { grid-column:1/-1; font:400 1.6rem var(--font-display); }.shot { padding:.4rem; width:100%; border:1px solid var(--color-line); background:var(--color-surface); cursor:zoom-in; }.shot img { display:block; width:100%; height:auto; }.lightbox { width:min(92vw,75rem); max-width:none; max-height:90vh; padding:1rem; border:1px solid var(--color-line); background:var(--color-surface); color:var(--color-text); }.lightbox::backdrop { background:#080908dc; }.lightbox img { display:block; max-width:100%; max-height:75vh; margin:auto; object-fit:contain; }.lightbox p { color:var(--color-muted); font-size:var(--text-sm); }.close { display:block; margin:0 0 .8rem auto; border:1px solid var(--color-line); border-radius:99px; padding:.4rem .8rem; background:transparent; color:inherit; cursor:pointer; }
+  @media(max-width:50rem) { .facts { grid-template-columns:repeat(2,1fr); }.article-layout { grid-template-columns:1fr; gap:.5rem; }.gallery { grid-template-columns:1fr; } }
+</style>
