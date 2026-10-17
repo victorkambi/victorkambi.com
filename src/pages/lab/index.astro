@@ -1,0 +1,13 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+const experiments = await getCollection('lab');
+---
+<SiteLayout title="Lab — Victor Kambi" description="Small interface studies and interactive experiments by Victor Kambi." active="lab">
+  <section class="lab-page"><p class="eyebrow">Playground</p><h1>Small questions,<br /><em>made interactive.</em></h1><p class="lede">A place for compact interface studies and tools. Each experiment is small enough to explain and useful enough to try.</p>
+    <div class="items">{experiments.map((item) => <a href={`/lab/${item.data.slug}`}><span class="index">{item.data.year}</span><span><strong>{item.data.title}</strong><small>{item.data.summary}</small></span><span aria-hidden="true">↗</span></a>)}</div>
+  </section>
+</SiteLayout>
+<style>
+  .lab-page { padding-block:clamp(4rem,10vw,8rem); }.eyebrow { color:var(--color-muted); text-transform:uppercase; letter-spacing:.1em; font-size:var(--text-xs); }.lab-page h1 { margin:.5rem 0 1.5rem; font:400 var(--text-display)/.98 var(--font-display); letter-spacing:-.06em; }.lab-page h1 em { color:var(--color-accent); font-style:normal; }.lede { max-width:40rem; color:var(--color-muted); }.items { margin-top:3rem; border-top:1px solid var(--color-line); }.items a { display:grid; grid-template-columns:5rem minmax(0,1fr) 2rem; gap:1rem; align-items:start; padding:1.3rem .5rem; border-bottom:1px solid var(--color-line); text-decoration:none; }.items a:hover { background:var(--color-surface); }.index,small { color:var(--color-muted); font-size:var(--text-sm); }.items strong { display:block; }.items small { display:block; margin-top:.25rem; }
+</style>

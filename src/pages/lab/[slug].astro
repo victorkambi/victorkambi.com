@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+export async function getStaticPaths() { const items = await getCollection('lab'); return items.map((item) => ({ params: { slug: item.data.slug }, props: { item } })); }
+const { item } = Astro.props;
+---
+<SiteLayout title={`${item.data.title} — Lab — Victor Kambi`} description={item.data.summary} active="lab">
+  <article class="experiment"><a class="back" href="/lab">← Back to the lab</a><p class="eyebrow">{item.data.kind} · {item.data.year}</p><h1>{item.data.title}</h1><p class="intro">{item.data.summary}</p>
+    <section class="study" aria-labelledby="study-title"><div><p class="eyebrow">Interactive study</p><h2 id="study-title">Can you see keyboard focus?</h2><p>Use Tab to move focus between the controls. Toggle the preview to compare a subtle outline with a high contrast ring.</p><button type="button" data-ring-toggle aria-pressed="true">Toggle focus ring</button></div><div class="preview" data-preview><button type="button">First control</button><button type="button">Second control</button><a href="#study-title">Text link</a><span class="focus-hint" aria-live="polite">Try navigating with your keyboard.</span></div></section>
+    <p class="todo">TODO: Add the question that prompted this experiment and a short note on the chosen design.</p>
+  </article>
+</SiteLayout>
+<script>
+  const ringButton = document.querySelector<HTMLButtonElement>('[data-ring-toggle]');
+  const preview = document.querySelector<HTMLElement>('[data-preview]');
+  ringButton?.addEventListener('click', () => { const enabled = ringButton.getAttribute('aria-pressed') !== 'true'; ringButton.setAttribute('aria-pressed', String(enabled)); preview?.classList.toggle('low-contrast', !enabled); });
+</script>
+<style>
+  .experiment { padding-block:3rem; }.back { color:var(--color-muted); font-size:var(--text-sm); text-decoration:none; }.eyebrow { margin-top:2rem; color:var(--color-muted); text-transform:uppercase; letter-spacing:.1em; font-size:var(--text-xs); }.experiment h1 { margin:.5rem 0 1rem; font:400 var(--text-display)/.98 var(--font-display); letter-spacing:-.06em; }.intro { max-width:42rem; color:var(--color-muted); font-size:1.2rem; }.study { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:3rem; padding:2rem; border:1px solid var(--color-line); background:var(--color-surface); border-radius:var(--radius-md); }.study h2 { font:400 1.7rem var(--font-display); }.study p { color:var(--color-muted); }.study button { padding:.65rem 1rem; background:var(--color-accent); color:var(--color-accent-contrast); border:0; border-radius:var(--radius-sm); font:inherit; cursor:pointer; }.preview { display:grid; place-content:center; gap:1rem; min-height:16rem; padding:2rem; background:var(--color-bg); border:1px solid var(--color-line); }.preview :is(button,a) { width:fit-content; padding:.55rem .8rem; border:1px solid var(--color-line); background:var(--color-surface); color:var(--color-text); border-radius:var(--radius-sm); }.preview :is(button,a):focus-visible { outline:3px solid #075bcc; outline-offset:3px; }.preview.low-contrast :is(button,a):focus-visible { outline-color:#afb1ad; }.focus-hint,.todo { color:var(--color-muted); font-size:var(--text-sm); }.todo { margin-top:1.5rem; }
+  @media(max-width:45rem) { .study { grid-template-columns:1fr; padding:1.25rem; } }
+</style>
