@@ -1,0 +1,13 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+<SiteLayout title="About — Victor Kambi" description="About Victor Kambi, a computer scientist and product designer-engineer based in Eldoret, Kenya." active="about">
+  <article class="about"><p class="eyebrow">About</p><h1>A designer who builds what he designs.</h1><p class="lead">I’m Victor Kambi, a computer scientist and product designer-engineer. I’m CTO at Tajji Ltd., where I designed and built BomaOS, a property owner and operator platform, and Jirani, its tenant app. Both are live on Google Play.</p><p>I work across product design and software engineering, from understanding a workflow to shipping the interface and the system behind it. I also do graphic design with Photoshop, Illustrator, and InDesign.</p><p><a href="https://play.google.com/store/apps/details?id=io.tajji.bomaos" rel="noreferrer">BomaOS on Google Play ↗</a> · TODO: add Jirani's verified store URL.</p><p class="todo">TODO: Add a short personal detail and confirm preferred contact and CV.</p>
+    <div class="about-grid"><section><h2>Practice</h2><ul><li>Product design and prototyping</li><li>Interface engineering</li><li>Usability testing and iteration</li><li>Graphic design: Photoshop, Illustrator, InDesign</li></ul></section><section><h2>Background</h2><ul><li>BSc Computer Science</li><li>CTO, Tajji Ltd.</li></ul></section></div>
+    <a class="cv-link" href="/cv.pdf">Download CV (placeholder) ↗</a>
+  </article>
+</SiteLayout>
+<style>
+  .about { padding-block:clamp(4rem,10vw,8rem); max-width:56rem; }.eyebrow { color:var(--color-muted); text-transform:uppercase; letter-spacing:.1em; font-size:var(--text-xs); }.about h1 { max-width:50rem; margin:.7rem 0 2rem; font:400 clamp(2.8rem,7vw,5.5rem)/.98 var(--font-display); letter-spacing:-.06em; }.about p:not(.eyebrow) { max-width:48rem; color:var(--color-muted); }.about .lead { color:var(--color-text) !important; font-size:clamp(1.15rem,2vw,1.45rem); }.todo { border-left:2px solid var(--color-accent); padding-left:1rem; }.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; margin-top:3rem; padding-block:2rem; border-top:1px solid var(--color-line); }.about-grid h2 { font:400 1.5rem var(--font-display); }.about-grid ul { margin:0; padding-left:1.1rem; color:var(--color-muted); }.about-grid li { margin:.4rem 0; }.cv-link { display:inline-block; margin-top:1rem; color:var(--color-accent); font-weight:650; }
+  @media(max-width:40rem) { .about-grid { grid-template-columns:1fr; gap:1.5rem; } }
+</style>

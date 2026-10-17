@@ -4,9 +4,9 @@ slug: bomaos-console
 year: 2026
 kind: product
 tags: [Product, Research, Impact]
-role: "TODO: confirm title and ownership boundaries"
+role: "CTO; product design and engineering (confirm project-specific ownership)"
 platform: Web
-oneLiner: Property operations in one place; case study details to be confirmed.
+oneLiner: A property owner and operator platform; case study details to be confirmed.
 status: shipped
 links: []
 cover: ../../assets/bomaos-cover.svg

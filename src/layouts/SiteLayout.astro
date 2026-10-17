@@ -45,10 +45,14 @@ const socialImage = new URL(workSlug ? `/og/${workSlug}.svg` : '/og/default.svg'
       @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; } }
     </style>
     <script>
+      const themeButton = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+      const initialTheme = document.documentElement.dataset.theme ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      themeButton?.setAttribute('aria-pressed', String(initialTheme === 'dark'));
       document.addEventListener('click', (event) => {
         const button = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-theme-toggle]');
         if (!button) return;
-        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        const current = document.documentElement.dataset.theme ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        const next = current === 'dark' ? 'light' : 'dark';
         document.documentElement.dataset.theme = next;
         localStorage.setItem('theme', next);
         button.setAttribute('aria-pressed', String(next === 'dark'));

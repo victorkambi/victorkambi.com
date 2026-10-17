@@ -66,7 +66,7 @@ const experiments = await getCollection('lab');
     let visible = 0;
     items.forEach((item) => { const show = kind === 'all' || item.dataset.kind === kind; item.hidden = !show; if (show) visible++; });
     if (empty) empty.hidden = visible > 0;
-    if (updateUrl) { const url = new URL(location.href); if (kind === 'all') url.searchParams.delete('kind'); else url.searchParams.set('kind', kind); history.replaceState(null, '', url); }
+    if (updateUrl) { const url = new URL(location.href); if (kind === 'all') url.searchParams.delete('kind'); else url.searchParams.set('kind', kind); history.pushState(null, '', url); }
   }
   function setView(view: string) {
     gallery?.classList.toggle('active', view === 'gallery');
@@ -75,6 +75,10 @@ const experiments = await getCollection('lab');
   }
   filters.forEach((button) => button.addEventListener('click', () => setFilter(button.dataset.filter ?? 'all', true)));
   views.forEach((button) => button.addEventListener('click', () => setView(button.dataset.view ?? 'index')));
+  window.addEventListener('popstate', () => {
+    const current = new URL(location.href).searchParams.get('kind');
+    setFilter(current && ['product', 'visual', 'lab'].includes(current) ? current : 'all', false);
+  });
   const initial = new URL(location.href).searchParams.get('kind');
   if (initial && ['product', 'visual', 'lab'].includes(initial)) setFilter(initial, false);
   setView('index');

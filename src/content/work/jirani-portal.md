@@ -4,9 +4,9 @@ slug: jirani-portal
 year: 2026
 kind: product
 tags: [Product, Research, Impact]
-role: "TODO: confirm title and ownership boundaries"
+role: "CTO; product design and engineering (confirm project-specific ownership)"
 platform: Android
-oneLiner: A tenant app for everyday property interactions; case study details to be confirmed.
+oneLiner: The tenant app built alongside BomaOS; case study details to be confirmed.
 status: shipped
 links: []
 cover: ../../assets/jirani-cover.svg
