@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Victor Kambi — Design & Engineering</title>
+<meta name="description" content="Portfolio of Victor Kambi, Design & Engineering — building backend systems and design systems in Kenya.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-elevated:#FFFFFF;
+    --text:#000000;
+    --text-muted:rgba(0,0,0,.55);
+    --border:rgba(0,0,0,.12);
+    --accent:rgba(0,0,0,.5);
+    --accent-soft:rgba(0,0,0,.08);
+    --font-sans:'Inter',system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#000000;
+      --bg-elevated:#1E1E1E;
+      --text:#FFFFFF;
+      --text-muted:rgba(255,255,255,.55);
+      --border:rgba(255,255,255,.14);
+      --accent:rgba(255,255,255,.5);
+      --accent-soft:rgba(255,255,255,.08);
+    }
+  }
+  /* Manual override always wins over system preference */
+  html.dark{
+    --bg:#000000;
+    --bg-elevated:#1E1E1E;
+    --text:#FFFFFF;
+    --text-muted:rgba(255,255,255,.55);
+    --border:rgba(255,255,255,.14);
+    --accent:rgba(255,255,255,.5);
+    --accent-soft:rgba(255,255,255,.08);
+  }
+  html.light{
+    --bg:#FFFFFF;
+    --bg-elevated:#FFFFFF;
+    --text:#000000;
+    --text-muted:rgba(0,0,0,.55);
+    --border:rgba(0,0,0,.12);
+    --accent:rgba(0,0,0,.5);
+    --accent-soft:rgba(0,0,0,.08);
+  }
+  *{box-sizing:border-box;}
+  html{font-size:16px;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-sans);
+    font-weight:500;
+    font-size:0.875rem; /* ~ Tailwind text-sm */
+    line-height:1.6;
+    transition:background .25s ease, color .25s ease;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--accent-soft);color:var(--accent);}
+
+  .wrap{
+    max-width:36.25rem;
+    margin:0 auto;
+    padding:0 1.5rem;
+  }
+
+  /* Identity block */
+  .identity{
+    padding-top:3rem;
+  }
+  @media (min-width:64rem){
+    .identity{padding-top:4.5rem;}
+  }
+  .name{
+    font-size:0.875rem;
+    font-weight:500;
+    letter-spacing:-0.01em;
+    margin:0 0 0.125rem;
+  }
+  .role{
+    font-size:0.875rem;
+    font-weight:500;
+    color:var(--text-muted);
+    margin:0 0 1.75rem;
+  }
+  .role a, #about > p a{color:rgba(0,0,0,.73);position:relative;z-index:1;transition:color .15s ease;text-decoration:underline;text-decoration-color:rgba(0,0,0,.25);text-underline-offset:3px;text-decoration-thickness:1.5px;}
+  html.dark .role a, html.dark #about > p a{color:rgba(255,255,255,.73);text-decoration-color:rgba(255,255,255,.25);}
+  .role a::before, #about > p a::before{
+    content:'';
+    position:absolute;
+    inset:-0.125rem -0.25rem;
+    background:var(--bg-elevated);
+    border-radius:0.375rem;
+    border:1px solid var(--border);
+    box-shadow:0 4px 16px rgba(0,0,0,.10),0 1px 3px rgba(0,0,0,.08);
+    opacity:0;
+    z-index:-1;
+    transition:opacity .2s ease;
+    pointer-events:none;
+  }
+  html.dark .role a::before, html.dark #about > p a::before{box-shadow:0 0 0 1px rgba(255,255,255,.08),0 4px 18px rgba(0,0,0,.55);}
+  .role a:hover, #about > p a:hover{color:var(--accent);text-decoration:none;}
+  .role a:hover::before, #about > p a:hover::before{opacity:1;}
+
+  /* Nav row */
+  nav.site{
+    display:flex;
+    align-items:center;
+    gap:1.125rem;
+    padding:0 0 1.25rem;
+    font-size:0.875rem;
+    font-weight:500;
+    color:var(--text-muted);
+  }
+  nav.site a{
+    position:relative;
+    padding-bottom:0.375rem;
+    transition:color .15s ease;
+    cursor:pointer;
+  }
+  nav.site a:hover, nav.site a.active{color:var(--text);}
+  nav.site a::after{
+    content:'';
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:1px;
+    background:var(--text);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .25s cubic-bezier(.16,1,.3,1);
+  }
+  nav.site a.active::after{transform:scaleX(1);}
+  nav.site .spacer{flex:1;}
+  #theme-toggle{
+    /* Hidden — theme now follows system preference automatically.
+       Toggle markup + JS logic kept intact in case manual control
+       is re-enabled later; just flip this back to remove display:none. */
+    display:none;
+    background:none;
+    border:1px solid var(--border);
+    border-radius:1.25rem;
+    width:2.375rem;height:1.3125rem;
+    position:relative;
+    cursor:pointer;
+    padding:0;
+    flex-shrink:0;
+  }
+  #theme-toggle::after{
+    content:'';
+    position:absolute;
+    top:0.125rem;left:0.125rem;
+    width:0.9375rem;height:0.9375rem;
+    border-radius:50%;
+    background:var(--accent);
+    transition:transform .2s ease;
+  }
+  html.dark #theme-toggle::after{transform:translateX(1.0625rem);}
+
+  /* Tab panels */
+  .tab-panel{padding:1.25rem 0 0;}
+  .tab-panel.hidden-panel{display:none;}
+  .tab-panel.focus-out{animation:focusOut .38s cubic-bezier(.45,0,.4,1) forwards;}
+  .tab-panel.focus-in{animation:focusIn .65s cubic-bezier(.19,1,.22,1);}
+  @keyframes focusOut{
+    from{opacity:1; filter:blur(0); transform:scale(1) translateY(0);}
+    to{opacity:0; filter:blur(5px); transform:scale(0.985) translateY(-0.25rem);}
+  }
+  @keyframes focusIn{
+    from{opacity:0; filter:blur(5px); transform:scale(0.985) translateY(0.25rem);}
+    to{opacity:1; filter:blur(0); transform:scale(1) translateY(0);}
+  }
+  #work{padding-bottom:3.5rem;}
+  #about{padding-bottom:3.5rem;}
+  #contact{padding-bottom:3.5rem;}
+
+  .section-title{
+    font-size:0.875rem;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--text-muted);
+    margin:0 0 0.25rem;
+  }
+
+  /* Work list — Gavin-style stacked link rows */
+  .hover-list{position:relative;}
+  .hover-highlight{
+    position:absolute;
+    left:0;top:0;
+    width:0;height:0;
+    background:var(--bg-elevated);
+    border-radius:0.875rem;
+    box-shadow:0 4px 16px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.08);
+    opacity:0;
+    pointer-events:none;
+    z-index:0;
+    transition:
+      transform .55s cubic-bezier(.34,1.56,.64,1),
+      width .55s cubic-bezier(.34,1.56,.64,1),
+      height .55s cubic-bezier(.34,1.56,.64,1),
+      opacity .2s ease;
+  }
+  html.dark .hover-highlight{
+    box-shadow:0 0 0 1px rgba(255,255,255,.08), 0 4px 18px rgba(0,0,0,.55);
+  }
+  .row{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:1rem;
+    padding:0.875rem 0.75rem;
+    margin:0 -0.75rem;
+  }
+  .about-sub .row{padding-top:0.25rem;padding-bottom:0.25rem;}
+  a.row{cursor:pointer;}
+  a.row:not(.row-compact):hover .title{color:var(--accent);}
+  .row .title{
+    font-size:0.875rem;
+    font-weight:500;
+    color:var(--text);
+    transition:color .15s ease;
+  }
+  .row .meta{
+    font-size:0.875rem;
+    font-weight:500;
+    color:var(--text-muted);
+    margin-top:0.125rem;
+  }
+  .row .year{
+    font-size:0.875rem;
+    font-weight:500;
+    color:var(--text-muted);
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+
+  /* Compact work rows: box hugs the title text, no divider */
+  .row-compact{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:0.1875rem;
+    width:max-content;
+    max-width:100%;
+    justify-content:normal;
+    border-bottom:none;
+    padding:0.5rem 0.75rem;
+    margin:0.125rem -0.75rem;
+  }
+  .row-compact .year{
+    flex-shrink:initial;
+    white-space:normal;
+  }
+
+  /* Work items: prominent text, subtle underlined */
+  #work .row-compact .title{
+    color:var(--text);
+    text-decoration:underline;
+    text-decoration-color:var(--border);
+    text-decoration-thickness:1px;
+    text-underline-offset:3px;
+  }
+
+  /* About */
+  #about > p{
+    max-width:54ch;
+    margin:0 0 0.875rem;
+  }
+  #about > p:last-child{margin-bottom:0;}
+
+  .about-sub{
+    margin-top:2.25rem;
+  }
+  .sub-label{
+    font-size:0.875rem;
+    font-weight:500;
+    color:var(--text-muted);
+    margin:0 0 0.25rem;
+  }
+  .lang-line{
+    font-size:0.875rem;
+    margin:0;
+    display:flex;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:0.375rem;
+  }
+  .lang-name{
+    color:var(--text);
+    font-weight:500;
+  }
+  .lang-level{
+    color:var(--text-muted);
+    font-weight:500;
+    font-size:0.875rem;
+  }
+  .lang-dot{color:var(--text-muted);}
+  .skills-list{
+    font-size:0.875rem;
+    font-weight:500;
+    color:var(--text-muted);
+    margin:0;
+    line-height:1.9;
+    text-wrap:pretty;
+  }
+  .skill-key{color:var(--text);font-weight:500;}
+
+  .edu-row{
+    display:flex;
+    justify-content:space-between;
+    gap:1rem;
+    font-size:0.875rem;
+    padding:0.25rem 0;
+  }
+  .edu-row .title{font-weight:500;}
+  .edu-row .school{color:var(--text-muted);font-weight:500;font-size:0.875rem;margin-top:0.125rem;}
+  .edu-row .yr{
+    font-size:0.875rem;
+    font-weight:500;
+    color:var(--text-muted);
+    white-space:nowrap;
+  }
+
+  /* Contact */
+  #contact .row:hover .title{color:var(--accent);}
+
+  footer{
+    padding:1.5rem 0 3rem;
+    font-size:0.75rem;
+    font-weight:500;
+    color:var(--text-muted);
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:0;
+  }
+  #local-time{font-variant-numeric:tabular-nums;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="identity">
+    <p class="name">Victor Kambi</p>
+    <p class="role">Design &amp; Engineering at <a href="https://tajji.io/" target="_blank" rel="noopener">Tajji</a></p>
+  </div>
+
+  <nav class="site">
+    <a data-tab="work" class="active">Work</a>
+    <a data-tab="about">About</a>
+    <a data-tab="contact">Contact</a>
+    <span class="spacer"></span>
+    <button id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+
+  <section id="work" class="tab-panel hover-list">
+    <a class="row row-compact" href="#" target="_blank" rel="noopener">
+      <span class="title">BomaOS Console</span>
+      <span class="year">2026</span>
+    </a>
+    <a class="row row-compact" href="#" target="_blank" rel="noopener">
+      <span class="title">Jirani Portal</span>
+      <span class="year">2026</span>
+    </a>
+    <a class="row row-compact" href="https://www.canva.com/design/DAHBHEFMHdI/AhBAxnrkOYuX81kXOo3HcA/view" target="_blank" rel="noopener">
+      <span class="title">Tajji Investor Deck pre-seed round</span>
+      <span class="year">2026</span>
+    </a>
+    <a class="row row-compact" href="https://play.google.com/store/apps/details?id=io.tajji.bomaos" target="_blank" rel="noopener">
+      <span class="title">BomaOS Mobile v1.0</span>
+      <span class="year">2025</span>
+    </a>
+    <a class="row row-compact" href="https://www.tajji.com" target="_blank" rel="noopener">
+      <span class="title">Tajji Website Revamped</span>
+      <span class="year">2025</span>
+    </a>
+    <a class="row row-compact" href="https://github.com/kambiv/Walenje" target="_blank" rel="noopener">
+      <span class="title">Walenje Mobile Pre-Alpha</span>
+      <span class="year">2025</span>
+    </a>
+  </section>
+
+  <section id="about" class="tab-panel hidden-panel">
+    <p>
+      I'm currently building the backend, design system, and product experience at <a href="https://tajji.io/" target="_blank" rel="noopener">Tajji</a>, a real estate platform rethinking property management across Africa.
+    </p>
+    <p>
+      Previously, I designed and developed responsive websites and digital campaigns for consumer brands at <a href="https://emmerce.io/" target="_blank" rel="noopener">Emmerce</a>.
+    </p>
+    <p>
+      My approach to design is making the mechanical parts have feeling, this makes interaction enjoyable and fun without compromising on performance and efficiency
+    </p>
+    <p>
+      Outside work, you'll usually find me reading philosophy, drawing, or watching and reviewing films.
+    </p>
+
+    <div class="about-sub">
+      <p class="sub-label">Experience</p>
+      <div class="row">
+        <div>
+          <div class="title">Software &amp; Design Engineer</div>
+          <div class="meta">Tajji Ltd, Eldoret</div>
+        </div>
+        <div class="year">2024–Now</div>
+      </div>
+      <div class="row">
+        <div>
+          <div class="title">Frontend Engineer &amp; Junior Designer</div>
+          <div class="meta">Tajji Ltd, Nairobi</div>
+        </div>
+        <div class="year">2023–2024</div>
+      </div>
+      <div class="row">
+        <div>
+          <div class="title">Frontend Engineer Intern</div>
+          <div class="meta">Emmerce Ltd, Nairobi</div>
+        </div>
+        <div class="year">2022</div>
+      </div>
+    </div>
+
+    <div class="about-sub">
+      <p class="sub-label">Education</p>
+      <div class="edu-row">
+        <div>
+          <div class="title">BSc Computer Science</div>
+          <div class="school">Moi University, Eldoret</div>
+        </div>
+        <div class="yr">2018–2023</div>
+      </div>
+      <div class="edu-row">
+        <div>
+          <div class="title">UX Design Pathway</div>
+          <div class="school">IBM SkillsBuild, Nairobi</div>
+        </div>
+        <div class="yr">2026–Now</div>
+      </div>
+    </div>
+
+    <div class="about-sub">
+      <p class="sub-label">Languages</p>
+      <p class="lang-line">
+        <span class="lang-name">English</span><span class="lang-level">(native)</span>
+        <span class="lang-dot">·</span>
+        <span class="lang-name">Swahili</span><span class="lang-level">(native)</span>
+      </p>
+    </div>
+
+    <div class="about-sub">
+      <p class="sub-label">Skills</p>
+      <div class="skills-list">
+        <div><span class="skill-key">Programming</span>: Kotlin, Kotlin Multiplatform, Compose Multiplatform, Java, TypeScript, JavaScript, Swift, SQL</div>
+        <div><span class="skill-key">Design</span>: Figma, Affinity, Miro, Framer, Editorial Design, Design Systems, Prototyping, Accessibility</div>
+        <div><span class="skill-key">Backend</span>: Spring Boot, Node.js, Temporal, PostgreSQL, Redis, Docker, Kubernetes, OIDC, OAuth2</div>
+        <div><span class="skill-key">Frontend</span>: React, Next.js, Vue.js, SvelteKit, Tailwind</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="tab-panel hidden-panel hover-list">
+    <a class="row" href="mailto:dev.kambi@gmail.com">
+      <div class="title">Email</div>
+      <div class="year">dev.kambi@gmail.com</div>
+    </a>
+    <a class="row" href="https://github.com/kambiv" target="_blank" rel="noopener">
+      <div class="title">GitHub</div>
+      <div class="year">github.com/kambiv</div>
+    </a>
+    <a class="row" href="https://victorkambi.com" target="_blank" rel="noopener">
+      <div class="title">Portfolio</div>
+      <div class="year">victorkambi.com</div>
+    </a>
+  </section>
+
+  <footer>
+    <div>Cultivate diligently</div>
+    <div id="local-time"></div>
+  </footer>
+
+</div>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+  // Start in whichever mode the system is currently in
+  root.classList.add(media.matches ? 'dark' : 'light');
+
+  // Keep following the system, unless the visitor has clicked the toggle
+  let manualOverride = false;
+  media.addEventListener('change', (e) => {
+    if (manualOverride) return;
+    root.classList.remove('dark', 'light');
+    root.classList.add(e.matches ? 'dark' : 'light');
+  });
+
+  toggle.addEventListener('click', () => {
+    manualOverride = true;
+    root.classList.toggle('dark');
+    root.classList.toggle('light');
+  });
+
+  // Gavin-style hover highlight: a box that glides between list rows
+  document.querySelectorAll('.hover-list').forEach((container) => {
+    const highlight = document.createElement('div');
+    highlight.className = 'hover-highlight';
+    container.prepend(highlight);
+
+    const rows = container.querySelectorAll('.row');
+
+    rows.forEach((row) => {
+      row.addEventListener('mouseenter', () => {
+        highlight.style.width = row.offsetWidth + 'px';
+        highlight.style.height = row.offsetHeight + 'px';
+        highlight.style.transform = `translate(${row.offsetLeft}px, ${row.offsetTop}px)`;
+        highlight.style.opacity = '1';
+      });
+    });
+
+    container.addEventListener('mouseleave', () => {
+      highlight.style.opacity = '0';
+    });
+  });
+
+  // Tabbed nav: one panel visible at a time.
+  // Current panel drifts back and blurs out of focus, then the new panel
+  // arrives blurred and sharpens into focus — a camera-style focus pull.
+  const navLinks = document.querySelectorAll('nav.site a[data-tab]');
+  const panels = document.querySelectorAll('.tab-panel');
+  const EXIT_MS = 380;
+  let switching = false;
+
+  function showPanel(targetId) {
+    panels.forEach((panel) => {
+      panel.classList.remove('focus-out', 'focus-in');
+      if (panel.id === targetId) {
+        panel.classList.remove('hidden-panel');
+        void panel.offsetWidth; // restart animation
+        panel.classList.add('focus-in');
+      } else {
+        panel.classList.add('hidden-panel');
+      }
+    });
+  }
+
+  navLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = link.dataset.tab;
+      if (switching || link.classList.contains('active')) return;
+
+      const current = document.querySelector('.tab-panel:not(.hidden-panel)');
+      switching = true;
+      navLinks.forEach((l) => l.classList.toggle('active', l === link));
+
+      if (current) {
+        current.classList.add('focus-out');
+        setTimeout(() => {
+          showPanel(targetId);
+          switching = false;
+        }, EXIT_MS);
+      } else {
+        showPanel(targetId);
+        switching = false;
+      }
+    });
+  });
+  // Live clock — Victor's local time, Africa/Nairobi (UTC+3)
+  const timeEl = document.getElementById('local-time');
+  const clockFormatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Africa/Nairobi',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
+  function updateClock() {
+    timeEl.textContent = `${clockFormatter.format(new Date())} UTC-3`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
