@@ -7,10 +7,36 @@ import Contact from './Contact.astro';
 import Footer from './Footer.astro';
 ---
 <div class="wrap">
-  <Identity />
-  <Nav />
-  <Work />
-  <About />
-  <Contact />
-  <Footer />
+  <div class="rail">
+    <Identity />
+    <Nav />
+  </div>
+  <div class="content">
+    <Work />
+    <About />
+    <Contact />
+    <Footer />
+  </div>
 </div>
+
+<style>
+  @media (min-width: 64rem) {
+    .wrap {
+      max-width: 64rem;
+      display: grid;
+      grid-template-columns: minmax(0, 13rem) minmax(0, 36.25rem);
+      column-gap: 4.5rem;
+      justify-content: center;
+    }
+    .rail {
+      position: sticky;
+      top: 0;
+      align-self: start;
+    }
+    .content {
+      /* panels have their own 1.25rem top padding; offset so panel
+         content lines up with the name in the rail */
+      padding-top: 3.25rem;
+    }
+  }
+</style>
