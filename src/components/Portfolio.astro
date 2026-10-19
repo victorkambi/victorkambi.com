@@ -37,4 +37,22 @@ import Footer from './Footer.astro';
       padding-top: 3.25rem;
     }
   }
+  /* Three columns from 80rem: menu, content, about socials. The About
+     panel spans the content and socials columns and lays itself out in
+     two tracks (see About.astro) so its socials sit at the right edge. */
+  @media (min-width: 80rem) {
+    .wrap {
+      max-width: 84rem;
+      grid-template-columns: minmax(0, 13rem) minmax(0, 36.25rem) minmax(0, 1fr);
+    }
+    .content {
+      grid-column: 2 / 4;
+    }
+    .content > :global(.tab-panel:not(.about-panel)) {
+      max-width: 36.25rem;
+    }
+    .content > :global(footer) {
+      max-width: 36.25rem;
+    }
+  }
 </style>
