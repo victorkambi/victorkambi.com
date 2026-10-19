@@ -3,6 +3,7 @@
 <footer>
   <div>Cultivate diligently</div>
   <div id="local-time"></div>
+  <p class="p3-note">Colors on this website make use of the wide P3 color space to produce rich, deep, amazing color when viewed in a web browser that supports the <code>color(display-p3 R G B)</code> CSS function, like for example Safari, in combination with a wide-gamut display.</p>
 </footer>
 
 <style>
@@ -18,5 +19,20 @@
   }
   #local-time {
     font-variant-numeric: tabular-nums;
+  }
+  .p3-note {
+    display: none;
+    max-width: 46ch;
+    margin: 0.75rem 0 0;
+    line-height: 1.55;
+  }
+  .p3-note code {
+    font-family: inherit;
+    color: var(--text);
+  }
+  @supports (color: color(display-p3 1 0 0)) {
+    .p3-note {
+      display: block;
+    }
   }
 </style>
