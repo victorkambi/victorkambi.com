@@ -27,18 +27,14 @@
     margin: 0 0 1.75rem;
   }
   .role a {
-    color: rgba(0, 0, 0, .73);
+    color: color-mix(in srgb, var(--text) 73%, transparent);
     position: relative;
     z-index: 1;
     transition: color .15s ease;
     text-decoration: underline;
-    text-decoration-color: rgba(0, 0, 0, .25);
+    text-decoration-color: color-mix(in srgb, var(--text) 25%, transparent);
     text-underline-offset: 3px;
     text-decoration-thickness: 1.5px;
-  }
-  html.dark .role a {
-    color: rgba(255, 255, 255, .73);
-    text-decoration-color: rgba(255, 255, 255, .25);
   }
   .role a::before {
     content: '';

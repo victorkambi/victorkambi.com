@@ -52,31 +52,61 @@ const { title = 'Victor Kambi — Design & Engineering', description = 'Portfoli
         --accent: rgba(0, 0, 0, .5);
         --accent-soft: rgba(0, 0, 0, .08);
       }
-      /* Per-experience accents: the active nav tab tints the accents
-         (selection, hover titles, role link, theme dot). Specificity
-         note: these must come after html.dark / html.light, and the
-         html.dark[...] variants beat both. */
+      /* Per-experience palettes: the active nav tab retints the whole
+         site (bg, text, borders, accents). Specificity note: these must
+         come after html.dark / html.light, and every dark rule needs the
+         html.dark[...] form to beat them. */
       html[data-experience='work'] {
+        --bg: #F5F7FB;
+        --bg-elevated: #FFFFFF;
+        --text: #0A0F1A;
+        --text-muted: rgba(10, 15, 26, .55);
+        --border: rgba(10, 15, 26, .12);
         --accent: #1D4ED8;
         --accent-soft: rgba(29, 78, 216, .1);
       }
       html[data-experience='about'] {
+        --bg: #FAF6F0;
+        --bg-elevated: #FFFFFF;
+        --text: #1A140B;
+        --text-muted: rgba(26, 20, 11, .55);
+        --border: rgba(26, 20, 11, .12);
         --accent: #B45309;
         --accent-soft: rgba(180, 83, 9, .1);
       }
       html[data-experience='contact'] {
+        --bg: #F3F8F4;
+        --bg-elevated: #FFFFFF;
+        --text: #07150C;
+        --text-muted: rgba(7, 21, 12, .55);
+        --border: rgba(7, 21, 12, .12);
         --accent: #15803D;
         --accent-soft: rgba(21, 128, 61, .1);
       }
       html.dark[data-experience='work'] {
+        --bg: #05070C;
+        --bg-elevated: #12161F;
+        --text: #E8EDF7;
+        --text-muted: rgba(232, 237, 247, .55);
+        --border: rgba(232, 237, 247, .14);
         --accent: #7EA6FF;
         --accent-soft: rgba(126, 166, 255, .16);
       }
       html.dark[data-experience='about'] {
+        --bg: #0A0806;
+        --bg-elevated: #1A1510;
+        --text: #F3EDE4;
+        --text-muted: rgba(243, 237, 228, .55);
+        --border: rgba(243, 237, 228, .14);
         --accent: #F2A65A;
         --accent-soft: rgba(242, 166, 90, .16);
       }
       html.dark[data-experience='contact'] {
+        --bg: #040805;
+        --bg-elevated: #0F1712;
+        --text: #E6F1E9;
+        --text-muted: rgba(230, 241, 233, .55);
+        --border: rgba(230, 241, 233, .14);
         --accent: #4ADE80;
         --accent-soft: rgba(74, 222, 128, .16);
       }

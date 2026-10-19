@@ -125,18 +125,14 @@
     margin-bottom: 0;
   }
   #about > p a {
-    color: rgba(0, 0, 0, .73);
+    color: color-mix(in srgb, var(--text) 73%, transparent);
     position: relative;
     z-index: 1;
     transition: color .15s ease;
     text-decoration: underline;
-    text-decoration-color: rgba(0, 0, 0, .25);
+    text-decoration-color: color-mix(in srgb, var(--text) 25%, transparent);
     text-underline-offset: 3px;
     text-decoration-thickness: 1.5px;
-  }
-  html.dark #about > p a {
-    color: rgba(255, 255, 255, .73);
-    text-decoration-color: rgba(255, 255, 255, .25);
   }
   #about > p a::before {
     content: '';
