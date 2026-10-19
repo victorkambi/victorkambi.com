@@ -173,10 +173,10 @@
   .row {
     position: relative;
     z-index: 1;
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
+    column-gap: 1rem;
     padding: 0.875rem 0.75rem;
     margin: 0 -0.75rem;
   }
