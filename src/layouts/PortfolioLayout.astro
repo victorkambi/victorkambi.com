@@ -1,0 +1,97 @@
+---
+import PortfolioScript from '../components/PortfolioScript.astro';
+const { title = 'Victor Kambi — Design & Engineering', description = 'Portfolio of Victor Kambi, Design & Engineering — building backend systems and design systems in Kenya.' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style is:global>
+      :root {
+        --bg: #FFFFFF;
+        --bg-elevated: #FFFFFF;
+        --text: #000000;
+        --text-muted: rgba(0, 0, 0, .55);
+        --border: rgba(0, 0, 0, .12);
+        --accent: rgba(0, 0, 0, .5);
+        --accent-soft: rgba(0, 0, 0, .08);
+        --font-sans: 'Inter', system-ui, sans-serif;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #000000;
+          --bg-elevated: #1E1E1E;
+          --text: #FFFFFF;
+          --text-muted: rgba(255, 255, 255, .55);
+          --border: rgba(255, 255, 255, .14);
+          --accent: rgba(255, 255, 255, .5);
+          --accent-soft: rgba(255, 255, 255, .08);
+        }
+      }
+      html.dark {
+        --bg: #000000;
+        --bg-elevated: #1E1E1E;
+        --text: #FFFFFF;
+        --text-muted: rgba(255, 255, 255, .55);
+        --border: rgba(255, 255, 255, .14);
+        --accent: rgba(255, 255, 255, .5);
+        --accent-soft: rgba(255, 255, 255, .08);
+      }
+      html.light {
+        --bg: #FFFFFF;
+        --bg-elevated: #FFFFFF;
+        --text: #000000;
+        --text-muted: rgba(0, 0, 0, .55);
+        --border: rgba(0, 0, 0, .12);
+        --accent: rgba(0, 0, 0, .5);
+        --accent-soft: rgba(0, 0, 0, .08);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        font-size: 16px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-sans);
+        font-weight: 500;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        transition: background .25s ease, color .25s ease;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      ::selection {
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+      .wrap {
+        max-width: 36.25rem;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <slot />
+    <PortfolioScript />
+  </body>
+</html>

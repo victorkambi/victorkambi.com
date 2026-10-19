@@ -1,0 +1,139 @@
+---
+---
+<section id="work" class="tab-panel hover-list">
+  <a class="row row-compact" href="#" target="_blank" rel="noopener">
+    <span class="title">BomaOS Console</span>
+    <span class="year">2026</span>
+  </a>
+  <a class="row row-compact" href="#" target="_blank" rel="noopener">
+    <span class="title">Jirani Portal</span>
+    <span class="year">2026</span>
+  </a>
+  <a class="row row-compact" href="https://www.canva.com/design/DAHBHEFMHdI/AhBAxnrkOYuX81kXOo3HcA/view" target="_blank" rel="noopener">
+    <span class="title">Tajji Investor Deck pre-seed round</span>
+    <span class="year">2026</span>
+  </a>
+  <a class="row row-compact" href="https://play.google.com/store/apps/details?id=io.tajji.bomaos" target="_blank" rel="noopener">
+    <span class="title">BomaOS Mobile v1.0</span>
+    <span class="year">2025</span>
+  </a>
+  <a class="row row-compact" href="https://www.tajji.com" target="_blank" rel="noopener">
+    <span class="title">Tajji Website Revamped</span>
+    <span class="year">2025</span>
+  </a>
+  <a class="row row-compact" href="https://github.com/kambiv/Walenje" target="_blank" rel="noopener">
+    <span class="title">Walenje Mobile Pre-Alpha</span>
+    <span class="year">2025</span>
+  </a>
+</section>
+
+<style>
+  .tab-panel {
+    padding: 1.25rem 0 0;
+  }
+  .tab-panel.hidden-panel {
+    display: none;
+  }
+  .tab-panel.focus-out {
+    animation: focusOut .38s cubic-bezier(.45, 0, .4, 1) forwards;
+  }
+  .tab-panel.focus-in {
+    animation: focusIn .65s cubic-bezier(.19, 1, .22, 1);
+  }
+  @keyframes focusOut {
+    from {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1) translateY(0);
+    }
+    to {
+      opacity: 0;
+      filter: blur(5px);
+      transform: scale(0.985) translateY(-0.25rem);
+    }
+  }
+  @keyframes focusIn {
+    from {
+      opacity: 0;
+      filter: blur(5px);
+      transform: scale(0.985) translateY(0.25rem);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1) translateY(0);
+    }
+  }
+  #work {
+    padding-bottom: 3.5rem;
+  }
+  .hover-list {
+    position: relative;
+  }
+  .hover-list :global(.hover-highlight) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    background: var(--bg-elevated);
+    border-radius: 0.875rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .10), 0 1px 3px rgba(0, 0, 0, .08);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: transform .55s cubic-bezier(.34, 1.56, .64, 1), width .55s cubic-bezier(.34, 1.56, .64, 1), height .55s cubic-bezier(.34, 1.56, .64, 1), opacity .2s ease;
+  }
+  html.dark .hover-list :global(.hover-highlight) {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .08), 0 4px 18px rgba(0, 0, 0, .55);
+  }
+  .row {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 0.75rem;
+    margin: 0 -0.75rem;
+  }
+  a.row {
+    cursor: pointer;
+  }
+  .row .title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: color .15s ease;
+  }
+  .row .year {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .row-compact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1875rem;
+    width: max-content;
+    max-width: 100%;
+    justify-content: normal;
+    border-bottom: none;
+    padding: 0.5rem 0.75rem;
+    margin: 0.125rem -0.75rem;
+  }
+  .row-compact .year {
+    flex-shrink: initial;
+    white-space: normal;
+  }
+  #work .row-compact .title {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--border);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+</style>

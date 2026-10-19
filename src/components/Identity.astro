@@ -1,0 +1,66 @@
+---
+---
+<div class="identity">
+  <p class="name">Victor Kambi</p>
+  <p class="role">Design &amp; Engineering at <a href="https://tajji.io/" target="_blank" rel="noopener">Tajji</a></p>
+</div>
+
+<style>
+  .identity {
+    padding-top: 3rem;
+  }
+  @media (min-width: 64rem) {
+    .identity {
+      padding-top: 4.5rem;
+    }
+  }
+  .name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.125rem;
+  }
+  .role {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin: 0 0 1.75rem;
+  }
+  .role a {
+    color: rgba(0, 0, 0, .73);
+    position: relative;
+    z-index: 1;
+    transition: color .15s ease;
+    text-decoration: underline;
+    text-decoration-color: rgba(0, 0, 0, .25);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1.5px;
+  }
+  html.dark .role a {
+    color: rgba(255, 255, 255, .73);
+    text-decoration-color: rgba(255, 255, 255, .25);
+  }
+  .role a::before {
+    content: '';
+    position: absolute;
+    inset: -0.125rem -0.25rem;
+    background: var(--bg-elevated);
+    border-radius: 0.375rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .10), 0 1px 3px rgba(0, 0, 0, .08);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity .2s ease;
+    pointer-events: none;
+  }
+  html.dark .role a::before {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .08), 0 4px 18px rgba(0, 0, 0, .55);
+  }
+  .role a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .role a:hover::before {
+    opacity: 1;
+  }
+</style>

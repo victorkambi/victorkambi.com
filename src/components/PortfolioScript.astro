@@ -1,0 +1,103 @@
+---
+---
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+  root.classList.add(media.matches ? 'dark' : 'light');
+
+  let manualOverride = false;
+  media.addEventListener('change', (e) => {
+    if (manualOverride) return;
+    root.classList.remove('dark', 'light');
+    root.classList.add(e.matches ? 'dark' : 'light');
+  });
+
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      manualOverride = true;
+      root.classList.toggle('dark');
+      root.classList.toggle('light');
+    });
+  }
+
+  document.querySelectorAll('.hover-list').forEach((container) => {
+    const highlight = document.createElement('div');
+    highlight.className = 'hover-highlight';
+    container.prepend(highlight);
+
+    const rows = container.querySelectorAll('.row');
+
+    rows.forEach((row) => {
+      row.addEventListener('mouseenter', () => {
+        const el = row as HTMLElement;
+        highlight.style.width = el.offsetWidth + 'px';
+        highlight.style.height = el.offsetHeight + 'px';
+        highlight.style.transform = `translate(${el.offsetLeft}px, ${el.offsetTop}px)`;
+        highlight.style.opacity = '1';
+      });
+    });
+
+    container.addEventListener('mouseleave', () => {
+      highlight.style.opacity = '0';
+    });
+  });
+
+  const navLinks = document.querySelectorAll('nav.site a[data-tab]');
+  const panels = document.querySelectorAll('.tab-panel');
+  const EXIT_MS = 380;
+  let switching = false;
+
+  function showPanel(targetId: string) {
+    panels.forEach((panel) => {
+      panel.classList.remove('focus-out', 'focus-in');
+      if (panel.id === targetId) {
+        panel.classList.remove('hidden-panel');
+        void (panel as HTMLElement).offsetWidth;
+        panel.classList.add('focus-in');
+      } else {
+        panel.classList.add('hidden-panel');
+      }
+    });
+  }
+
+  navLinks.forEach((link) => {
+    const l = link as HTMLElement;
+    l.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = l.dataset.tab || '';
+      if (switching || l.classList.contains('active')) return;
+
+      const current = document.querySelector('.tab-panel:not(.hidden-panel)');
+      switching = true;
+      navLinks.forEach((nl) => nl.classList.toggle('active', nl === l));
+
+      if (current) {
+        current.classList.add('focus-out');
+        setTimeout(() => {
+          showPanel(targetId);
+          switching = false;
+        }, EXIT_MS);
+      } else {
+        showPanel(targetId);
+        switching = false;
+      }
+    });
+  });
+
+  const timeEl = document.getElementById('local-time');
+  const clockFormatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Africa/Nairobi',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
+  function updateClock() {
+    if (timeEl) {
+      timeEl.textContent = `${clockFormatter.format(new Date())} UTC-3`;
+    }
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>

@@ -1,0 +1,260 @@
+---
+---
+<section id="about" class="tab-panel hidden-panel">
+  <p>
+    I'm currently building the backend, design system, and product experience at <a href="https://tajji.io/" target="_blank" rel="noopener">Tajji</a>, a real estate platform rethinking property management across Africa.
+  </p>
+  <p>
+    Previously, I designed and developed responsive websites and digital campaigns for consumer brands at <a href="https://emmerce.io/" target="_blank" rel="noopener">Emmerce</a>.
+  </p>
+  <p>
+    My approach to design is making the mechanical parts have feeling, this makes interaction enjoyable and fun without compromising on performance and efficiency
+  </p>
+  <p>
+    Outside work, you'll usually find me reading philosophy, drawing, or watching and reviewing films.
+  </p>
+
+  <div class="about-sub">
+    <p class="sub-label">Experience</p>
+    <div class="row">
+      <div>
+        <div class="title">Software &amp; Design Engineer</div>
+        <div class="meta">Tajji Ltd, Eldoret</div>
+      </div>
+      <div class="year">2024–Now</div>
+    </div>
+    <div class="row">
+      <div>
+        <div class="title">Frontend Engineer &amp; Junior Designer</div>
+        <div class="meta">Tajji Ltd, Nairobi</div>
+      </div>
+      <div class="year">2023–2024</div>
+    </div>
+    <div class="row">
+      <div>
+        <div class="title">Frontend Engineer Intern</div>
+        <div class="meta">Emmerce Ltd, Nairobi</div>
+      </div>
+      <div class="year">2022</div>
+    </div>
+  </div>
+
+  <div class="about-sub">
+    <p class="sub-label">Education</p>
+    <div class="edu-row">
+      <div>
+        <div class="title">BSc Computer Science</div>
+        <div class="school">Moi University, Eldoret</div>
+      </div>
+      <div class="yr">2018–2023</div>
+    </div>
+    <div class="edu-row">
+      <div>
+        <div class="title">UX Design Pathway</div>
+        <div class="school">IBM SkillsBuild, Nairobi</div>
+      </div>
+      <div class="yr">2026–Now</div>
+    </div>
+  </div>
+
+  <div class="about-sub">
+    <p class="sub-label">Languages</p>
+    <p class="lang-line">
+      <span class="lang-name">English</span><span class="lang-level">(native)</span>
+      <span class="lang-dot">·</span>
+      <span class="lang-name">Swahili</span><span class="lang-level">(native)</span>
+    </p>
+  </div>
+
+  <div class="about-sub">
+    <p class="sub-label">Skills</p>
+    <div class="skills-list">
+      <div><span class="skill-key">Programming</span>: Kotlin, Kotlin Multiplatform, Compose Multiplatform, Java, TypeScript, JavaScript, Swift, SQL</div>
+      <div><span class="skill-key">Design</span>: Figma, Affinity, Miro, Framer, Editorial Design, Design Systems, Prototyping, Accessibility</div>
+      <div><span class="skill-key">Backend</span>: Spring Boot, Node.js, Temporal, PostgreSQL, Redis, Docker, Kubernetes, OIDC, OAuth2</div>
+      <div><span class="skill-key">Frontend</span>: React, Next.js, Vue.js, SvelteKit, Tailwind</div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tab-panel {
+    padding: 1.25rem 0 0;
+  }
+  .tab-panel.hidden-panel {
+    display: none;
+  }
+  .tab-panel.focus-out {
+    animation: focusOut .38s cubic-bezier(.45, 0, .4, 1) forwards;
+  }
+  .tab-panel.focus-in {
+    animation: focusIn .65s cubic-bezier(.19, 1, .22, 1);
+  }
+  @keyframes focusOut {
+    from {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1) translateY(0);
+    }
+    to {
+      opacity: 0;
+      filter: blur(5px);
+      transform: scale(0.985) translateY(-0.25rem);
+    }
+  }
+  @keyframes focusIn {
+    from {
+      opacity: 0;
+      filter: blur(5px);
+      transform: scale(0.985) translateY(0.25rem);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1) translateY(0);
+    }
+  }
+  #about {
+    padding-bottom: 3.5rem;
+  }
+  #about > p {
+    max-width: 54ch;
+    margin: 0 0 0.875rem;
+  }
+  #about > p:last-child {
+    margin-bottom: 0;
+  }
+  #about > p a {
+    color: rgba(0, 0, 0, .73);
+    position: relative;
+    z-index: 1;
+    transition: color .15s ease;
+    text-decoration: underline;
+    text-decoration-color: rgba(0, 0, 0, .25);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1.5px;
+  }
+  html.dark #about > p a {
+    color: rgba(255, 255, 255, .73);
+    text-decoration-color: rgba(255, 255, 255, .25);
+  }
+  #about > p a::before {
+    content: '';
+    position: absolute;
+    inset: -0.125rem -0.25rem;
+    background: var(--bg-elevated);
+    border-radius: 0.375rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .10), 0 1px 3px rgba(0, 0, 0, .08);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity .2s ease;
+    pointer-events: none;
+  }
+  html.dark #about > p a::before {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .08), 0 4px 18px rgba(0, 0, 0, .55);
+  }
+  #about > p a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  #about > p a:hover::before {
+    opacity: 1;
+  }
+  .about-sub {
+    margin-top: 2.25rem;
+  }
+  .sub-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin: 0 0 0.25rem;
+  }
+  .row {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 0.75rem;
+    margin: 0 -0.75rem;
+  }
+  .about-sub .row {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+  .row .title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: color .15s ease;
+  }
+  .row .meta {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-top: 0.125rem;
+  }
+  .row .year {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .lang-line {
+    font-size: 0.875rem;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+  .lang-name {
+    color: var(--text);
+    font-weight: 500;
+  }
+  .lang-level {
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+  .lang-dot {
+    color: var(--text-muted);
+  }
+  .skills-list {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.9;
+    text-wrap: pretty;
+  }
+  .skill-key {
+    color: var(--text);
+    font-weight: 500;
+  }
+  .edu-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.875rem;
+    padding: 0.25rem 0;
+  }
+  .edu-row .title {
+    font-weight: 500;
+  }
+  .edu-row .school {
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin-top: 0.125rem;
+  }
+  .edu-row .yr {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+</style>
