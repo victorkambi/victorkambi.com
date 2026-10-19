@@ -7,6 +7,9 @@
 
   root.classList.add(media.matches ? 'dark' : 'light');
 
+  const activeTab = document.querySelector('nav.site a[data-tab].active');
+  root.dataset.experience = (activeTab as HTMLElement | null)?.dataset.tab || 'work';
+
   let manualOverride = false;
   media.addEventListener('change', (e) => {
     if (manualOverride) return;
@@ -71,6 +74,7 @@
 
       const current = document.querySelector('.tab-panel:not(.hidden-panel)');
       switching = true;
+      root.dataset.experience = targetId;
       navLinks.forEach((nl) => nl.classList.toggle('active', nl === l));
 
       if (current) {

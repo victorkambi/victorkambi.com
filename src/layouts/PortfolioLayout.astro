@@ -52,6 +52,34 @@ const { title = 'Victor Kambi — Design & Engineering', description = 'Portfoli
         --accent: rgba(0, 0, 0, .5);
         --accent-soft: rgba(0, 0, 0, .08);
       }
+      /* Per-experience accents: the active nav tab tints the accents
+         (selection, hover titles, role link, theme dot). Specificity
+         note: these must come after html.dark / html.light, and the
+         html.dark[...] variants beat both. */
+      html[data-experience='work'] {
+        --accent: #1D4ED8;
+        --accent-soft: rgba(29, 78, 216, .1);
+      }
+      html[data-experience='about'] {
+        --accent: #B45309;
+        --accent-soft: rgba(180, 83, 9, .1);
+      }
+      html[data-experience='contact'] {
+        --accent: #15803D;
+        --accent-soft: rgba(21, 128, 61, .1);
+      }
+      html.dark[data-experience='work'] {
+        --accent: #7EA6FF;
+        --accent-soft: rgba(126, 166, 255, .16);
+      }
+      html.dark[data-experience='about'] {
+        --accent: #F2A65A;
+        --accent-soft: rgba(242, 166, 90, .16);
+      }
+      html.dark[data-experience='contact'] {
+        --accent: #4ADE80;
+        --accent-soft: rgba(74, 222, 128, .16);
+      }
       * {
         box-sizing: border-box;
       }
