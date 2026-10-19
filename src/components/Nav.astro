@@ -17,18 +17,21 @@
     font-weight: 500;
     font-size: 1.5rem;
     line-height: 2rem;
-    letter-spacing: .01em;
+    letter-spacing: -0.01em;
   }
   nav.site a {
-    color: var(--text);
-    opacity: 0.35;
+    color: var(--accent);
+    opacity: 1;
     transition: opacity .15s ease;
     cursor: pointer;
   }
   nav.site a:hover {
-    opacity: 0.7;
+    opacity: 0.75;
   }
   nav.site a.active {
+    /* Black or white, whichever has the stronger WCAG contrast
+       against the current experience background. */
+    color: var(--nav-active, var(--text));
     opacity: 1;
   }
   nav.site .spacer {

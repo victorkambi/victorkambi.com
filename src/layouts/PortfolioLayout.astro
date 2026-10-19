@@ -53,84 +53,91 @@ const { title = 'Victor Kambi — Design & Engineering', description = 'Portfoli
         --accent-soft: rgba(0, 0, 0, .08);
       }
       /* Per-experience palettes: the active nav tab retints the whole
-         site (bg, text, borders, accents). Specificity note: these must
-         come after html.dark / html.light, and every dark rule needs the
-         html.dark[...] form to beat them. */
+         site (bg, text, borders, accents). Work is Platinum (#D9D9D9),
+         About is Strawberry (#FA5053). Dark mode uses the same palettes.
+         Specificity note: these must come after html.dark / html.light,
+         and every dark rule needs the html.dark[...] form to beat them. */
       html[data-experience='work'] {
-        --bg: #F5F7FB;
-        --bg-elevated: #FFFFFF;
-        --text: #0A0F1A;
-        --text-muted: rgba(10, 15, 26, .55);
-        --border: rgba(10, 15, 26, .12);
-        --accent: #1D4ED8;
-        --accent-soft: rgba(29, 78, 216, .1);
+        --bg: #D9D9D9;
+        --bg-elevated: #E8E8E8;
+        --text: #171719;
+        --text-muted: rgba(23, 23, 25, .55);
+        --border: rgba(23, 23, 25, .16);
+        --accent: rgba(23, 23, 25, .5);
+        --accent-soft: rgba(23, 23, 25, .08);
+        --nav-active: #000000;
       }
       html[data-experience='about'] {
-        --bg: #FAF6F0;
-        --bg-elevated: #FFFFFF;
-        --text: #1A140B;
-        --text-muted: rgba(26, 20, 11, .55);
-        --border: rgba(26, 20, 11, .12);
-        --accent: #B45309;
-        --accent-soft: rgba(180, 83, 9, .1);
+        --bg: #F9D2D4;
+        --bg-elevated: #FFF1F1;
+        --text: #2A0407;
+        --text-muted: rgba(42, 4, 7, .6);
+        --border: rgba(42, 4, 7, .16);
+        --accent: #FF3B3F;
+        --accent-soft: rgba(255, 59, 63, .22);
+        --nav-active: #000000;
       }
       html.dark[data-experience='work'] {
-        --bg: #05070C;
-        --bg-elevated: #12161F;
-        --text: #E8EDF7;
-        --text-muted: rgba(232, 237, 247, .55);
-        --border: rgba(232, 237, 247, .14);
-        --accent: #7EA6FF;
-        --accent-soft: rgba(126, 166, 255, .16);
+        --bg: #D9D9D9;
+        --bg-elevated: #E8E8E8;
+        --text: #171719;
+        --text-muted: rgba(23, 23, 25, .55);
+        --border: rgba(23, 23, 25, .16);
+        --accent: rgba(23, 23, 25, .5);
+        --accent-soft: rgba(23, 23, 25, .08);
+        --nav-active: #000000;
       }
       html.dark[data-experience='about'] {
-        --bg: #0A0806;
-        --bg-elevated: #1A1510;
-        --text: #F3EDE4;
-        --text-muted: rgba(243, 237, 228, .55);
-        --border: rgba(243, 237, 228, .14);
-        --accent: #F2A65A;
-        --accent-soft: rgba(242, 166, 90, .16);
+        --bg: #F9D2D4;
+        --bg-elevated: #FFF1F1;
+        --text: #2A0407;
+        --text-muted: rgba(42, 4, 7, .6);
+        --border: rgba(42, 4, 7, .16);
+        --accent: #FF3B3F;
+        --accent-soft: rgba(255, 59, 63, .22);
+        --nav-active: #000000;
       }
-      /* Wide-gamut layer: same palettes authored in display-p3, with the
-         accents pushed just outside the sRGB gamut so capable displays
-         show genuinely richer colour than the sRGB fallbacks above. */
+      /* Wide-gamut layer: same palettes authored in display-p3. */
       @supports (color: color(display-p3 1 0 0)) {
         html[data-experience='work'] {
-          --bg: color(display-p3 0.962 0.968 0.983);
-          --bg-elevated: color(display-p3 1 1 1);
-          --text: color(display-p3 0.043 0.058 0.099);
-          --text-muted: color(display-p3 0.043 0.058 0.099 / .55);
-          --border: color(display-p3 0.043 0.058 0.099 / .12);
-          --accent: color(display-p3 0.09 0.29 0.94);
-          --accent-soft: color(display-p3 0.09 0.29 0.94 / .1);
+          --bg: color(display-p3 0.851 0.851 0.851);
+          --bg-elevated: color(display-p3 0.91 0.91 0.91);
+          --text: color(display-p3 0.09 0.09 0.098);
+          --text-muted: color(display-p3 0.09 0.09 0.098 / .55);
+          --border: color(display-p3 0.09 0.09 0.098 / .16);
+          --accent: color(display-p3 0.09 0.09 0.098 / .5);
+          --accent-soft: color(display-p3 0.09 0.09 0.098 / .08);
+          --nav-active: #000000;
         }
         html[data-experience='about'] {
-          --bg: color(display-p3 0.978 0.965 0.944);
-          --bg-elevated: color(display-p3 1 1 1);
-          --text: color(display-p3 0.098 0.079 0.048);
-          --text-muted: color(display-p3 0.098 0.079 0.048 / .55);
-          --border: color(display-p3 0.098 0.079 0.048 / .12);
-          --accent: color(display-p3 0.71 0.35 0.12);
-          --accent-soft: color(display-p3 0.71 0.35 0.12 / .1);
+          --bg: color(display-p3 0.976 0.824 0.831);
+          --bg-elevated: color(display-p3 1 0.945 0.945);
+          --text: color(display-p3 0.165 0.016 0.027);
+          --text-muted: color(display-p3 0.165 0.016 0.027 / .6);
+          --border: color(display-p3 0.165 0.016 0.027 / .16);
+          --accent: color(display-p3 1 0.231 0.247);
+          --accent-soft: color(display-p3 1 0.231 0.247 / .22);
+          --nav-active: #000000;
         }
         html.dark[data-experience='work'] {
-          --bg: color(display-p3 0.021 0.027 0.045);
-          --bg-elevated: color(display-p3 0.074 0.086 0.119);
-          --text: color(display-p3 0.913 0.929 0.965);
-          --text-muted: color(display-p3 0.913 0.929 0.965 / .55);
-          --border: color(display-p3 0.913 0.929 0.965 / .14);
-          --accent: color(display-p3 0.5 0.64 1);
-          --accent-soft: color(display-p3 0.5 0.64 1 / .16);
+          --bg: color(display-p3 0.851 0.851 0.851);
+          --bg-elevated: color(display-p3 0.91 0.91 0.91);
+          --text: color(display-p3 0.09 0.09 0.098);
+          --text-muted: color(display-p3 0.09 0.09 0.098 / .55);
+          --border: color(display-p3 0.09 0.09 0.098 / .16);
+          --accent: color(display-p3 0.09 0.09 0.098 / .5);
+          --accent-soft: color(display-p3 0.09 0.09 0.098 / .08);
+          --nav-active: #000000;
         }
         html.dark[data-experience='about'] {
-          --bg: color(display-p3 0.038 0.032 0.024);
-          --bg-elevated: color(display-p3 0.099 0.083 0.065);
-          --text: color(display-p3 0.949 0.93 0.898);
-          --text-muted: color(display-p3 0.949 0.93 0.898 / .55);
-          --border: color(display-p3 0.949 0.93 0.898 / .14);
-          --accent: color(display-p3 0.97 0.68 0.3);
-          --accent-soft: color(display-p3 0.97 0.68 0.3 / .16);
+          --bg: color(display-p3 0.976 0.824 0.831);
+          --bg-elevated: color(display-p3 1 0.945 0.945);
+          --text: color(display-p3 0.165 0.016 0.027);
+          --text-muted: color(display-p3 0.165 0.016 0.027 / .6);
+          --border: color(display-p3 0.165 0.016 0.027 / .16);
+          --accent: color(display-p3 1 0.231 0.247);
+          --accent-soft: color(display-p3 1 0.231 0.247 / .22);
+          --nav-active: #000000;
         }
       }
       * {
@@ -144,8 +151,8 @@ const { title = 'Victor Kambi — Design & Engineering', description = 'Portfoli
         background: var(--bg);
         color: var(--text);
         font-family: var(--font-sans);
-        font-weight: 500;
-        font-size: 0.875rem;
+        font-weight: 400;
+        font-size: 1rem;
         line-height: 1.6;
         transition: background .25s ease, color .25s ease;
         -webkit-font-smoothing: antialiased;
