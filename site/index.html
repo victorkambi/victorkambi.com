@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-experience="work">
+<html lang="en" data-experience="work" class="is-loading">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,26 +17,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/styles.css" />
+    <script>
+      // Pick the palette before first paint so #about links don't flash grey.
+      if (location.hash === '#about') document.documentElement.dataset.experience = 'about';
+    </script>
     <script src="/script.js" defer></script>
   </head>
   <body>
     <div class="wrap">
       <div class="rail">
-        <div class="identity">
+        <div class="identity" data-stagger>
           <h1 class="name">Victor Kambi</h1>
           <p class="tagline">I design and engineer at the intersection of form and function.</p>
           <p class="tagline tagline-sub">Currently, Product Engineer &nbsp;
             <a href="https://tajji.io" target="_blank" rel="noopener">@Tajji.</a>
           </p>
         </div>
-        <nav class="site" aria-label="Sections">
+        <nav class="site" aria-label="Sections" data-stagger="3">
           <a href="#work" data-tab="work" class="active" aria-current="true">Work</a>
           <a href="#about" data-tab="about">About</a>
         </nav>
       </div>
 
       <main class="content">
-        <section id="work" class="tab-panel hover-list" aria-labelledby="work-title">
+        <section id="work" class="tab-panel hover-list focus-in" data-stagger aria-labelledby="work-title">
           <h2 id="work-title" class="panel-title">Professional highlights</h2>
           <div class="row">
             <span class="title">BomaOS Console</span>
@@ -65,7 +69,7 @@
         </section>
 
         <section id="about" class="tab-panel hidden-panel about-panel" aria-label="About">
-          <aside class="about-socials">
+          <aside class="about-socials" data-stagger>
             <a href="https://twitter.com/maestrokambi" target="_blank" rel="noopener">Twitter @maestrokambi</a>
             <a href="https://github.com/victorkambi" target="_blank" rel="noopener">GitHub /victorkambi</a>
             <a href="https://www.behance.net/victorkambi" target="_blank" rel="noopener">Behance /victorkambi</a>
@@ -74,7 +78,7 @@
             <a class="about-cv" href="/Victor_Kambi_2026_CV.pdf" target="_blank" rel="noopener">Résumé/CV ↗</a>
           </aside>
 
-          <div class="about-body">
+          <div class="about-body" data-stagger="2">
             <p>
               I'm currently building the backend, design system, and product experience at <a href="https://tajji.io/" target="_blank" rel="noopener">Tajji</a>, a real estate platform rethinking property management across Africa.
             </p>

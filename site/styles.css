@@ -3,6 +3,21 @@
    Strawberry (#FA5053). */
 :root {
   --font-sans: 'Inter', system-ui, sans-serif;
+  --ease-out: cubic-bezier(.19, 1, .22, 1);
+  --ease-in-out: cubic-bezier(.45, 0, .4, 1);
+}
+/* Registered so palette changes blend instead of snapping: every
+   element using var(--text) etc. retints together with the page. */
+@property --bg { syntax: '<color>'; inherits: true; initial-value: #D9D9D9; }
+@property --bg-elevated { syntax: '<color>'; inherits: true; initial-value: #E8E8E8; }
+@property --text { syntax: '<color>'; inherits: true; initial-value: #171719; }
+@property --text-muted { syntax: '<color>'; inherits: true; initial-value: #171719; }
+@property --border { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --accent { syntax: '<color>'; inherits: true; initial-value: #171719; }
+@property --accent-soft { syntax: '<color>'; inherits: true; initial-value: transparent; }
+html {
+  transition: --bg .6s ease, --bg-elevated .6s ease, --text .6s ease, --text-muted .6s ease,
+    --border .6s ease, --accent .6s ease, --accent-soft .6s ease;
 }
 html[data-experience='work'] {
   --bg: #D9D9D9;
@@ -61,7 +76,6 @@ body {
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.6;
-  transition: background .25s ease, color .25s ease;
   -webkit-font-smoothing: antialiased;
 }
 a {
@@ -78,9 +92,16 @@ a {
   color: var(--accent);
 }
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  html {
     transition: none !important;
     animation: none !important;
+  }
+}
+/* Soft crossfade between index.html and 404.html where supported. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
   }
 }
 
@@ -173,7 +194,7 @@ nav.site {
 }
 nav.site a {
   color: var(--accent);
-  transition: opacity .15s ease;
+  transition: opacity .15s ease, color .5s ease;
 }
 nav.site a:hover {
   opacity: 0.75;
@@ -192,35 +213,53 @@ nav.site a.active {
 .tab-panel.hidden-panel {
   display: none;
 }
+/* Tab transitions. The nav is a vertical list, so motion follows it:
+   moving down the list (Work → About) the old panel drifts up and the
+   new one rises from below; moving back up reverses that. --shift is
+   flipped by script.js via data-direction. */
+html {
+  --shift: 0.5rem;
+}
+html[data-direction='up'] {
+  --shift: -0.5rem;
+}
 .tab-panel.focus-out {
-  animation: focusOut .38s cubic-bezier(.45, 0, .4, 1) forwards;
+  animation: panelOut .26s var(--ease-in-out) forwards;
 }
-.tab-panel.focus-in {
-  animation: focusIn .65s cubic-bezier(.19, 1, .22, 1);
-}
-@keyframes focusOut {
-  from {
-    opacity: 1;
-    filter: blur(0);
-    transform: scale(1) translateY(0);
-  }
+@keyframes panelOut {
   to {
     opacity: 0;
-    filter: blur(5px);
-    transform: scale(0.985) translateY(-0.25rem);
+    filter: blur(4px);
+    transform: translateY(calc(var(--shift) * -1)) scale(0.99);
   }
 }
-@keyframes focusIn {
+/* The incoming panel's content arrives line by line. script.js sets
+   --i on each child of a [data-stagger] container (counting from the
+   attribute's value, if any); the delay is capped
+   so long panels don't drag. */
+:is(.tab-panel.focus-in[data-stagger], .tab-panel.focus-in [data-stagger]) > :not(.hover-highlight),
+.rail [data-stagger] > * {
+  /* backwards, not both: once finished the rows go back to their own
+     transitions (hover highlight, link hovers) untouched. */
+  animation: rise .7s var(--ease-out) backwards;
+  animation-delay: calc(min(var(--i, 0), 10) * 45ms + var(--stagger-base, 0ms));
+}
+@keyframes rise {
   from {
     opacity: 0;
-    filter: blur(5px);
-    transform: scale(0.985) translateY(0.25rem);
+    filter: blur(4px);
+    transform: translateY(var(--shift));
   }
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: scale(1) translateY(0);
-  }
+}
+/* First load only: the rail settles in just ahead of the content. */
+.rail [data-stagger] > * {
+  animation-duration: .9s;
+}
+html.is-loading :is(.tab-panel.focus-in[data-stagger], .tab-panel.focus-in [data-stagger]) > * {
+  --stagger-base: 180ms;
+}
+html:not(.is-loading) .rail [data-stagger] > * {
+  animation: none;
 }
 .panel-title {
   font-size: 1.5rem;

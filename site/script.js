@@ -1,4 +1,14 @@
 const root = document.documentElement;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+// Stagger indexes for the entrance animation (see [data-stagger] in
+// styles.css). A numeric attribute value offsets the first index.
+document.querySelectorAll('[data-stagger]').forEach((container) => {
+  let i = Number(container.dataset.stagger) || 0;
+  [...container.children].forEach((child) => child.style.setProperty('--i', i++));
+});
+// The first-load entrance (rail + first panel) runs once.
+setTimeout(() => root.classList.remove('is-loading'), 1400);
 
 // Hover highlight: one shared pill that glides between rows.
 document.querySelectorAll('.hover-list').forEach((container) => {
@@ -26,7 +36,7 @@ const navLinks = document.querySelectorAll('nav.site a[data-tab]');
 const panels = document.querySelectorAll('.tab-panel');
 const themeColor = document.querySelector('meta[name="theme-color"]');
 const THEME_COLORS = { work: '#D9D9D9', about: '#F9D2D4' };
-const EXIT_MS = 380;
+const EXIT_MS = 260;
 let switching = false;
 
 function tabFromHash() {
@@ -60,12 +70,19 @@ function showPanel(targetId, animate) {
   });
 }
 
+// Tabs further down the nav count as "down", so motion follows the list.
+function tabIndex(id) {
+  return [...navLinks].findIndex((l) => l.dataset.tab === id);
+}
+
 function switchTo(targetId) {
   if (switching || root.dataset.experience === targetId) return;
   const current = document.querySelector('.tab-panel:not(.hidden-panel)');
+  root.classList.remove('is-loading');
+  root.dataset.direction = tabIndex(targetId) > tabIndex(root.dataset.experience) ? 'down' : 'up';
   switching = true;
   setActive(targetId);
-  if (current) {
+  if (current && !reducedMotion.matches) {
     current.classList.add('focus-out');
     setTimeout(() => {
       showPanel(targetId, true);
@@ -94,7 +111,7 @@ if (navLinks.length) {
   const initial = tabFromHash();
   if (initial !== 'work') {
     setActive(initial);
-    showPanel(initial, false);
+    showPanel(initial, true);
     window.scrollTo(0, 0);
   }
 }
