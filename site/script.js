@@ -3,15 +3,17 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 // Stagger indexes for the entrance animation (see [data-stagger] in
 // styles.css). A numeric attribute value offsets the first index.
-document.querySelectorAll('[data-stagger]').forEach((container) => {
-  let i = Number(container.dataset.stagger) || 0;
-  [...container.children].forEach((child) => child.style.setProperty('--i', i++));
-});
-// The first-load entrance (rail + first panel) runs once.
-setTimeout(() => root.classList.remove('is-loading'), 1400);
+function setupStagger(scope) {
+  const containers = [...scope.querySelectorAll('[data-stagger]')];
+  if (scope.matches?.('[data-stagger]')) containers.unshift(scope);
+  containers.forEach((container) => {
+    let i = Number(container.dataset.stagger) || 0;
+    [...container.children].forEach((child) => child.style.setProperty('--i', i++));
+  });
+}
 
 // Hover highlight: one shared pill that glides between rows.
-document.querySelectorAll('.hover-list').forEach((container) => {
+function setupHoverList(container) {
   const highlight = document.createElement('div');
   highlight.className = 'hover-highlight';
   container.prepend(highlight);
@@ -28,6 +30,33 @@ document.querySelectorAll('.hover-list').forEach((container) => {
   container.addEventListener('mouseleave', () => {
     highlight.style.opacity = '0';
   });
+}
+
+setupStagger(document);
+document.querySelectorAll('.hover-list').forEach(setupHoverList);
+// The first-load entrance (rail + first panel) runs once.
+setTimeout(() => root.classList.remove('is-loading'), 1400);
+
+// <div data-include="#work"> pulls that section from the homepage, so the
+// 404 page shows the real Work list without a second copy to keep in sync.
+document.querySelectorAll('[data-include]').forEach(async (slot) => {
+  try {
+    const res = await fetch('/');
+    if (!res.ok) return;
+    const page = new DOMParser().parseFromString(await res.text(), 'text/html');
+    const source = page.querySelector(slot.dataset.include);
+    if (!source) return;
+    const section = document.importNode(source, true);
+    section.classList.remove('hidden-panel');
+    section.classList.add('focus-in');
+    // Continue the entrance after whatever precedes the slot.
+    section.dataset.stagger = String(slot.previousElementSibling?.children.length ?? 0);
+    slot.replaceWith(section);
+    setupStagger(section);
+    if (section.matches('.hover-list')) setupHoverList(section);
+  } catch {
+    // Offline or blocked: the page still has its own "Back to work" link.
+  }
 });
 
 // Tabs: the URL hash (#work / #about) picks the panel, so sections can

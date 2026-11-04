@@ -455,7 +455,11 @@ html:not(.is-loading) .rail [data-stagger] > * {
   color: var(--text);
 }
 
-/* 404 */
+/* 404: the message sits above the homepage's Work list (pulled in by
+   script.js), so the panel gap is tighter than between tabs. */
+.tab-panel.not-found {
+  padding-bottom: 1.25rem;
+}
 .not-found-line {
   font: inherit;
   max-width: 54ch;
