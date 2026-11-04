@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Victor Kambi — Concept: Playground</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/site/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../shared/brand.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="../shared/screens.js" defer></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header class="masthead" id="top">
+      <div class="mh-left">
+        <a class="wordmark" href="#top">Victor Kambi</a>
+        <p class="mono">Nairobi · <span id="clock">--:--</span></p>
+      </div>
+      <p class="statement">I’m a product engineer working where backend systems and design systems meet. Currently building the property platform at <a href="https://tajji.io" target="_blank" rel="noopener">Tajji</a>: two apps, a web console, and the kit underneath. Previously <a href="https://emmerce.io" target="_blank" rel="noopener">Emmerce</a>.</p>
+    </header>
+
+    <nav class="bar mono" aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#playground">Playground</a>
+      <a href="#about">About</a>
+      <a href="/site/Victor_Kambi_2026_CV.pdf" target="_blank" rel="noopener">CV ↗</a>
+    </nav>
+
+    <main>
+      <section class="featured" id="work" aria-labelledby="work-h">
+        <div class="section-head">
+          <h2 id="work-h"><span class="muted">Featured work:</span> products I designed and built end to end. Tap them, they work.</h2>
+          <div class="arrows" role="group" aria-label="Scroll featured work">
+            <button type="button" class="pill" data-scroll="-1" aria-label="Previous">←</button>
+            <button type="button" class="pill" data-scroll="1" aria-label="Next">→</button>
+          </div>
+        </div>
+
+        <ol class="track" tabindex="0" aria-label="Featured work">
+          <li class="card">
+            <div class="card-head"><span class="mono idx">01</span><h3>BomaOS Mobile</h3><span class="chip">Landlord app</span></div>
+            <div class="stage"><div data-device="phone" data-screens="bomaos-overview,bomaos-record,bomaos-receipt" aria-label="BomaOS, illustrative"></div></div>
+            <p class="hint mono">Tap “Record payment” and follow it to the ledger.</p>
+            <div class="card-actions">
+              <button type="button" class="pill" data-details aria-expanded="false">Details +</button>
+              <a class="pill" href="https://play.google.com/store/apps/details?id=io.tajji.bomaos" target="_blank" rel="noopener">Google Play ↗</a>
+            </div>
+            <dl class="details" hidden><dt>Role</dt><dd>Design and engineering, end to end</dd><dt>Stack</dt><dd>Kotlin, Compose Multiplatform, Sceptre</dd><dt>Year</dt><dd>2025, v1.0</dd></dl>
+          </li>
+
+          <li class="card">
+            <div class="card-head"><span class="mono idx">02</span><h3>BomaOS Console</h3><span class="chip">Web console</span></div>
+            <div class="stage stage-wide"><div data-device="browser" data-screens="console-agreement,console-plan,console-payment,console-welcome" aria-label="BomaOS Console, illustrative"></div></div>
+            <p class="hint mono">Commission a portfolio: agreement, plan, payment.</p>
+            <div class="card-actions">
+              <button type="button" class="pill" data-details aria-expanded="false">Details +</button>
+            </div>
+            <dl class="details" hidden><dt>Role</dt><dd>Product design, frontend and the API behind it</dd><dt>Stack</dt><dd>Next.js, TypeScript, Spring Boot, Paystack</dd><dt>Year</dt><dd>2026</dd></dl>
+          </li>
+
+          <li class="card">
+            <div class="card-head"><span class="mono idx">03</span><h3>Jirani</h3><span class="chip">Tenant app</span></div>
+            <div class="stage"><div data-device="phone" data-screens="jirani-pay" aria-label="Jirani, illustrative"></div></div>
+            <p class="hint mono">Drag the gold handle to pay rent.</p>
+            <div class="card-actions">
+              <button type="button" class="pill" data-details aria-expanded="false">Details +</button>
+            </div>
+            <dl class="details" hidden><dt>Role</dt><dd>Design and engineering</dd><dt>Stack</dt><dd>Kotlin Multiplatform, M-Pesa, Smile ID</dd><dt>Year</dt><dd>2026</dd></dl>
+          </li>
+
+          <li class="card">
+            <div class="card-head"><span class="mono idx">04</span><h3>Investor Deck</h3><span class="chip">Pre-seed · Brand</span></div>
+            <div class="stage stage-deck" data-tilt>
+              <div class="deck">
+                <img src="../shared/assets/tajji-mark.svg" alt="" width="42" height="42" />
+                <p class="deck-title">Engineered trust for Africa’s urban century</p>
+                <p class="mono deck-meta">Tajji · Pre-seed · 2026</p>
+              </div>
+            </div>
+            <p class="hint mono">Move over the cover.</p>
+            <div class="card-actions">
+              <a class="pill" href="https://www.canva.com/design/DAHBHEFMHdI/AhBAxnrkOYuX81kXOo3HcA/view" target="_blank" rel="noopener">Open deck ↗</a>
+            </div>
+          </li>
+
+          <li class="card">
+            <div class="card-head"><span class="mono idx">05</span><h3>Tajji Website</h3><span class="chip">Marketing · SvelteKit</span></div>
+            <div class="stage stage-wide">
+              <div class="device device-browser static">
+                <div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i><span>tajji.com</span></div>
+                <div class="site-shot"><img src="../shared/assets/tajji-logo.svg" alt="Tajji" width="96" height="37" /><p>Africa’s urban century runs on engineered trust.</p><img class="site-art" src="../shared/assets/tajji-product.jpg" alt="" width="513" height="456" /></div>
+              </div>
+            </div>
+            <p class="hint mono">Revamped in 2025.</p>
+            <div class="card-actions">
+              <a class="pill" href="https://www.tajji.com" target="_blank" rel="noopener">Visit ↗</a>
+            </div>
+          </li>
+
+          <li class="card">
+            <div class="card-head"><span class="mono idx">06</span><h3>Walenje</h3><span class="chip">Pre-alpha · Open source</span></div>
+            <div class="stage stage-term"><pre class="term mono" aria-label="Terminal"><span class="muted">$</span> <span data-type="git clone github.com/victorkambi/Walenje"></span><span class="caret"></span></pre></div>
+            <p class="hint mono">A mobile side project, early days.</p>
+            <div class="card-actions">
+              <a class="pill" href="https://github.com/victorkambi/Walenje" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="playground" id="playground" aria-labelledby="pg-h">
+        <div class="section-head">
+          <h2 id="pg-h"><span class="muted">Playground:</span> small experiments about the parts of products nobody sees and everybody feels.</h2>
+        </div>
+        <div class="pg-grid">
+          <article class="card">
+            <div class="card-head"><span class="mono idx">01</span><h3>Spring</h3></div>
+            <p class="hint mono">Drag the puck and let go. Tune the spring.</p>
+            <div class="stage stage-spring">
+              <div class="spring-box"><button type="button" class="puck" aria-label="Spring puck. Arrow keys nudge it."></button></div>
+              <svg class="spring-plot" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true"><path d="" /></svg>
+            </div>
+            <div class="controls mono">
+              <label>Stiffness <input type="range" min="40" max="600" value="260" data-k /></label>
+              <label>Damping <input type="range" min="4" max="40" value="14" data-c /></label>
+            </div>
+            <p class="story">Every hover and panel on my sites moves on a spring, not a duration. Softer springs read as friendly, stiffer ones as precise. This is the dial I keep reaching for.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-head"><span class="mono idx">02</span><h3>Token remix</h3></div>
+            <p class="hint mono">Change a token and everything downstream follows.</p>
+            <div class="stage stage-tokens">
+              <div class="listing">
+                <div class="listing-img"></div>
+                <div class="listing-body"><b>2 bed · Kilimani</b><span>KES 45,000 / month</span><button type="button">Request viewing</button></div>
+              </div>
+            </div>
+            <div class="controls mono" data-tokens>
+              <div class="seg" data-token="radius"><span>radius</span><button type="button" data-v="4">4</button><button type="button" data-v="12" aria-pressed="true">12</button><button type="button" data-v="24">24</button></div>
+              <div class="seg" data-token="space"><span>space</span><button type="button" data-v="8">8</button><button type="button" data-v="16" aria-pressed="true">16</button><button type="button" data-v="24">24</button></div>
+              <div class="seg" data-token="palette"><span>palette</span><button type="button" data-v="tajji" aria-pressed="true">tajji</button><button type="button" data-v="mono">mono</button><button type="button" data-v="garden">garden</button></div>
+            </div>
+            <p class="story">Sceptre, Tajji’s design system, is built this way: a handful of tokens, and components that only ever reference them. Re-theming a whole app is a diff of a few lines.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-head"><span class="mono idx">03</span><h3>Ledger</h3></div>
+            <p class="hint mono">Bill a tenant, take a payment, watch the books balance.</p>
+            <div class="stage stage-ledger">
+              <div class="ledger-inputs mono">
+                <label>Rent <input type="number" min="0" step="500" value="30000" data-rent /></label>
+                <label>Service <input type="number" min="0" step="100" value="2000" data-service /></label>
+                <label>Paid <input type="number" min="0" step="500" value="32000" data-paid /></label>
+              </div>
+              <table class="ledger mono"><thead><tr><th>Account</th><th>Dr</th><th>Cr</th></tr></thead><tbody></tbody><tfoot></tfoot></table>
+            </div>
+            <p class="story">Money in a property platform is a ledger first and a screen second. Every rent payment in BomaOS lands as balanced double-entry lines before it ever shows up as a number.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="about" id="about" aria-labelledby="about-h">
+        <h2 id="about-h" class="muted">About</h2>
+        <div class="about-text">
+          <p>My approach to design is making the mechanical parts have feeling. Interaction should be enjoyable and fun without compromising performance or efficiency.</p>
+          <p>Outside work, you’ll usually find me reading philosophy, drawing, or watching and reviewing films.</p>
+        </div>
+        <dl class="timeline">
+          <dt>Product Engineer · Tajji</dt><dd class="mono">2024 – now</dd>
+          <dt>Founding Engineer · Tajji</dt><dd class="mono">2023 – 24</dd>
+          <dt>Frontend Engineer Intern · Emmerce</dt><dd class="mono">2022</dd>
+          <dt>BSc Computer Science · Moi University</dt><dd class="mono">Eldoret</dd>
+          <dt>UX Design Pathway · IBM SkillsBuild</dt><dd class="mono">now</dd>
+        </dl>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <div>
+        <p class="foot-title">Say hi.</p>
+        <p>Have a product, a problem, or a question about property tech in Africa? I’d love to hear from you.</p>
+        <p class="links"><a href="mailto:work@victorkambi.com">work@victorkambi.com</a> · <a href="https://github.com/victorkambi" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.figma.com/@victorkambi" target="_blank" rel="noopener">Figma</a> · <a href="https://www.behance.net/victorkambi" target="_blank" rel="noopener">Behance</a> · <a href="https://twitter.com/maestrokambi" target="_blank" rel="noopener">Twitter</a></p>
+      </div>
+      <div class="mono muted">
+        <p>Kotlin · KMP · Compose · TypeScript · Swift</p>
+        <p>Spring Boot · Temporal · PostgreSQL · Kubernetes</p>
+        <p>Figma · Affinity · Framer</p>
+      </div>
+      <div class="foot-end">
+        <p class="mono muted">© 2026 · Cultivate diligently</p>
+        <a class="pill" href="#top" aria-label="Back to top">↑</a>
+      </div>
+    </footer>
+  </body>
+</html>

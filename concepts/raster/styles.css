@@ -1,0 +1,325 @@
+/* Raster: a typographic system after rsms.me. One 8px unit, a 24px
+   baseline, six 128px columns with 64px gutters (1088px of content).
+   Hierarchy comes from weight and dimming, not extra sizes, and there
+   is exactly one accent: Tajji gold. */
+:root {
+  --unit: 8px;
+  --line: calc(var(--unit) * 3);
+  --pad: calc(var(--unit) * 8);
+  --gap: calc(var(--unit) * 8);
+  --col: calc(var(--unit) * 16);
+  --cols: 6;
+  --fg: #000;
+  --fg-dim: rgba(0, 0, 0, .4);
+  --bg: #fff;
+  --accent: var(--tj-gold);
+  --box: rgba(0, 0, 0, .05);
+  --sans: 'Inter', system-ui, sans-serif;
+}
+@supports (color: color(display-p3 1 1 1)) {
+  :root {
+    --accent: color(display-p3 .88 .55 .05);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  background: var(--bg);
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  color: var(--fg);
+  font: 400 16px/var(--line) var(--sans);
+  font-optical-sizing: auto;
+  letter-spacing: -.01em;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p, ul, dl, dd, figure {
+  margin: 0;
+  padding: 0;
+}
+ul {
+  list-style: none;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.dim {
+  color: var(--fg-dim);
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* The grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--col));
+  column-gap: var(--gap);
+  row-gap: calc(var(--line) * 3);
+  justify-content: center;
+  padding: var(--pad);
+}
+.cell { grid-column: span 2; min-width: 0; }
+.s4 { grid-column: span 4; }
+.s6 { grid-column: 1 / -1; }
+
+/* Type: 16/24 body, 24/32 section heads, 32/40 display (opsz gives
+   Inter Display at these sizes). */
+h1 {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  margin-bottom: var(--line);
+}
+h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: var(--unit);
+}
+.cell h2 + * {
+  margin-top: 0;
+}
+.cell h2:not(:first-child) {
+  margin-top: var(--line);
+}
+.lede,
+.big {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+  letter-spacing: -.015em;
+}
+.hero {
+  padding-top: calc(var(--line) * 4);
+}
+
+/* Menu: display-size links in the accent, the current one in black. */
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: calc(var(--line) * 4);
+  font-size: 32px;
+  line-height: 32px;
+  font-weight: 500;
+  letter-spacing: -.01em;
+}
+.menu a {
+  color: var(--accent);
+}
+.menu a:hover,
+.menu a[aria-current] {
+  color: var(--fg);
+}
+.menu .dot {
+  font-size: 24px;
+  margin-bottom: var(--unit);
+}
+
+/* Lists */
+.list li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--unit);
+}
+.list a {
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 0, 0, .2);
+  text-underline-offset: 3px;
+}
+.list a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+/* Systems: each row drives the "In use" devices below. */
+.systems button {
+  display: block;
+  width: 100%;
+  padding: var(--unit) var(--unit);
+  margin: 0 calc(var(--unit) * -1);
+  width: calc(100% + var(--unit) * 2);
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.systems b {
+  display: block;
+  font-weight: 600;
+}
+.systems span {
+  display: block;
+}
+.systems button:hover,
+.systems button[aria-pressed='true'] {
+  background: var(--box);
+}
+.systems button[aria-pressed='true'] b {
+  color: var(--accent);
+}
+
+/* Intro boxes, like rsms's boxed links */
+.boxes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--unit);
+  margin-top: var(--line);
+}
+.box {
+  display: inline-block;
+  padding: var(--unit) calc(var(--unit) * 2);
+  background: var(--box);
+  font-weight: 500;
+  transition: background .2s ease;
+}
+.box b {
+  display: block;
+  font-weight: 500;
+  color: var(--fg-dim);
+}
+.box:hover {
+  background: rgba(0, 0, 0, .09);
+}
+
+/* In use: a subgrid so the devices sit on the page's own columns. */
+.in-use {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--line);
+  align-items: end;
+}
+.in-use h2 {
+  margin: 0;
+}
+.in-use h2 .dim {
+  font-weight: 400;
+  margin-left: var(--unit);
+}
+.phone-cell { grid-column: span 2; padding-inline: calc(var(--unit) * 2); }
+.browser-cell { grid-column: span 4; }
+figcaption {
+  margin-top: var(--line);
+  font-size: 14px;
+}
+
+/* Entries */
+.entries dt {
+  font-weight: 600;
+}
+.entries dt .dim {
+  font-weight: 400;
+  margin-left: calc(var(--unit) / 2);
+}
+.entries dd {
+  color: var(--fg-dim);
+  margin-bottom: var(--unit);
+}
+
+.foot {
+  display: flex;
+  gap: calc(var(--unit) * 4);
+  align-items: baseline;
+  padding-top: var(--line);
+  border-top: 2px solid var(--fg);
+  font-size: 14px;
+}
+.grid-toggle {
+  margin-left: auto;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+.grid-toggle kbd {
+  font: inherit;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: var(--box);
+  color: var(--fg-dim);
+}
+
+/* Craft layer: the columns and the 24px baseline, toggled with G. */
+.overlay {
+  position: absolute;
+  inset: 0;
+  min-height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  background: repeating-linear-gradient(to bottom, transparent 0 calc(var(--line) - 1px), rgba(20, 230, 245, .35) calc(var(--line) - 1px) var(--line));
+  background-position: 0 var(--pad);
+}
+.overlay .grid {
+  height: 100%;
+}
+.overlay i {
+  grid-column: span 1;
+  background: rgba(248, 110, 91, .12);
+}
+body {
+  position: relative;
+}
+
+/* Entrance: cells settle in reading order. */
+@media (prefers-reduced-motion: no-preference) {
+  .grid > .cell,
+  .in-use > .cell {
+    animation: settle .8s cubic-bezier(.19, 1, .22, 1) backwards;
+    animation-delay: calc(var(--i, 0) * 60ms);
+  }
+  @keyframes settle {
+    from {
+      opacity: 0;
+      transform: translateY(var(--unit));
+    }
+  }
+}
+
+/* 4 columns ≤ 1024px, 2 columns ≤ 640px (as raster's s / xs). */
+@media (max-width: 1024px) {
+  :root {
+    --cols: 4;
+    --pad: calc(var(--unit) * 4);
+    --gap: calc(var(--unit) * 4);
+  }
+  .grid { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); }
+  .s4, .hero { grid-column: 1 / -1; }
+  .menu { grid-column: 1 / -1; order: -1; flex-direction: row; flex-wrap: wrap; gap: 0 calc(var(--unit) * 3); padding-top: var(--line); font-size: 24px; }
+  .menu .dot { margin: 0; }
+  .hero { padding-top: 0; }
+  .intro { grid-column: 1 / -1; }
+  .phone-cell { grid-column: span 1; padding: 0; }
+  .browser-cell { grid-column: span 3; }
+  .foot { flex-wrap: wrap; }
+  .overlay i:nth-child(n + 5) { display: none; }
+}
+@media (max-width: 640px) {
+  :root {
+    --cols: 2;
+    --pad: calc(var(--unit) * 2);
+    --gap: calc(var(--unit) * 2);
+  }
+  .grid { row-gap: calc(var(--line) * 2); }
+  .cell, .s4 { grid-column: 1 / -1; }
+  .lede, .big { font-size: 20px; line-height: 28px; }
+  .in-use { align-items: start; }
+  .in-use h2 .dim { display: block; margin: 0; }
+  .phone-cell { grid-column: span 1; }
+  .browser-cell { grid-column: 1 / -1; }
+  .overlay i:nth-child(n + 3) { display: none; }
+}

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Victor Kambi — Concept: Raster</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/site/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../shared/brand.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="../shared/screens.js" defer></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="grid" id="top">
+      <header class="cell s4 hero">
+        <h1>Hello, I’m Victor</h1>
+        <p class="lede">I design and engineer at the intersection of form and function. At Tajji I build a property platform end to end: two apps, a web console, the backend, and the design system underneath them.</p>
+      </header>
+
+      <nav class="cell s2 menu" aria-label="Sections">
+        <a href="#top" class="dot" aria-label="Top">●</a>
+        <a href="#work">Work</a>
+        <a href="#systems">Systems</a>
+        <a href="#about">About</a>
+        <a href="/site/Victor_Kambi_2026_CV.pdf" target="_blank" rel="noopener">Résumé</a>
+      </nav>
+
+      <section class="cell s2" id="work" aria-labelledby="work-h">
+        <h2 id="work-h">Work</h2>
+        <ul class="list">
+          <li><span>BomaOS Console</span> <span class="dim">2026</span></li>
+          <li><span>Jirani Portal</span> <span class="dim">2026</span></li>
+          <li><a href="https://www.canva.com/design/DAHBHEFMHdI/AhBAxnrkOYuX81kXOo3HcA/view" target="_blank" rel="noopener">Tajji Investor Deck pre-seed round</a> <span class="dim">2026</span></li>
+          <li><a href="https://play.google.com/store/apps/details?id=io.tajji.bomaos" target="_blank" rel="noopener">BomaOS Mobile v1.0</a> <span class="dim">2025</span></li>
+          <li><a href="https://www.tajji.com" target="_blank" rel="noopener">Tajji Website Revamped</a> <span class="dim">2025</span></li>
+          <li><a href="https://github.com/victorkambi/Walenje" target="_blank" rel="noopener">Walenje Mobile Pre-Alpha</a> <span class="dim">2025</span></li>
+        </ul>
+      </section>
+
+      <section class="cell s2" id="systems" aria-labelledby="systems-h">
+        <h2 id="systems-h">Systems I built</h2>
+        <ul class="systems">
+          <li><button type="button" data-phone="bomaos-overview" data-browser="console-welcome" aria-pressed="true"><b>BomaOS</b><span class="dim">For landlords and managers. Portfolios, leases, collections. Android, iOS, desktop.</span></button></li>
+          <li><button type="button" data-phone="jirani-pay"><b>Jirani</b><span class="dim">The tenant side. Claim a lease, verify, pay rent with M-Pesa.</span></button></li>
+          <li><button type="button" data-browser="console-plan"><b>BomaOS Console</b><span class="dim">Web console for commissioning, billing and teams.</span></button></li>
+          <li><button type="button" data-browser="sceptre-tokens"><b>Sceptre</b><span class="dim">The design system both apps are built from. Compose Multiplatform.</span></button></li>
+          <li><button type="button" data-phone="identity-verify"><b>Identity verification</b><span class="dim">KYC and KYB for people and organisations.</span></button></li>
+          <li><button type="button" data-phone="bomaos-receipt"><b>Payments &amp; ledger</b><span class="dim">Paystack and M-Pesa in, double-entry records out.</span></button></li>
+        </ul>
+      </section>
+
+      <section class="cell s2 intro" aria-label="Introduction">
+        <p class="big">I’m a product engineer based in Nairobi. I care about the mechanical parts having feeling: interaction that is enjoyable without costing performance.</p>
+        <p class="boxes">
+          <a class="box" href="mailto:work@victorkambi.com"><b>work@victorkambi.com</b> Get in touch →</a>
+          <a class="box" href="/site/Victor_Kambi_2026_CV.pdf" target="_blank" rel="noopener">Résumé / CV →</a>
+        </p>
+      </section>
+
+      <section class="in-use" aria-labelledby="in-use-h">
+        <h2 id="in-use-h" class="cell s6">In use <span class="dim">Pick a system above. Screens are illustrative, rebuilt in HTML.</span></h2>
+        <figure class="cell phone-cell">
+          <div data-device="phone" data-screens="bomaos-overview,bomaos-record,bomaos-receipt,jirani-pay,identity-verify" aria-label="Phone app preview"></div>
+          <figcaption class="dim" data-caption="phone">BomaOS</figcaption>
+        </figure>
+        <figure class="cell browser-cell">
+          <div data-device="browser" data-screens="console-welcome,console-agreement,console-plan,console-payment,sceptre-tokens" aria-label="Web console preview"></div>
+          <figcaption class="dim" data-caption="browser">BomaOS Console</figcaption>
+        </figure>
+      </section>
+
+      <section class="cell s2" id="about" aria-labelledby="exp-h">
+        <h2 id="exp-h">Experience</h2>
+        <dl class="entries">
+          <dt>Product Engineer <span class="dim">2024 – now</span></dt>
+          <dd>Tajji Real Estate. Backend, design system and product experience.</dd>
+          <dt>Founding Engineer <span class="dim">2023 – 24</span></dt>
+          <dd>Tajji Real Estate. Initial architecture and first versions of the platform.</dd>
+          <dt>Frontend Engineer Intern <span class="dim">2022</span></dt>
+          <dd>Emmerce. Responsive websites and campaigns for consumer brands.</dd>
+        </dl>
+      </section>
+
+      <section class="cell s2" aria-labelledby="edu-h">
+        <h2 id="edu-h">Education</h2>
+        <dl class="entries">
+          <dt>BSc Computer Science</dt>
+          <dd>Moi University, Eldoret.</dd>
+          <dt>UX Design Pathway <span class="dim">now</span></dt>
+          <dd>IBM SkillsBuild.</dd>
+        </dl>
+        <h2>Elsewhere</h2>
+        <ul class="list">
+          <li><a href="https://github.com/victorkambi" target="_blank" rel="noopener">GitHub</a> <span class="dim">/victorkambi</span></li>
+          <li><a href="https://www.figma.com/@victorkambi" target="_blank" rel="noopener">Figma</a> <span class="dim">@victorkambi</span></li>
+          <li><a href="https://www.behance.net/victorkambi" target="_blank" rel="noopener">Behance</a> <span class="dim">/victorkambi</span></li>
+          <li><a href="https://twitter.com/maestrokambi" target="_blank" rel="noopener">Twitter</a> <span class="dim">@maestrokambi</span></li>
+        </ul>
+      </section>
+
+      <section class="cell s2" aria-labelledby="skills-h">
+        <h2 id="skills-h">Tools</h2>
+        <dl class="entries">
+          <dt>Programming</dt><dd>Kotlin, KMP, Compose Multiplatform, Java, TypeScript, Swift, SQL</dd>
+          <dt>Backend</dt><dd>Spring Boot, Node.js, Temporal, PostgreSQL, Redis, Docker, Kubernetes, OIDC</dd>
+          <dt>Frontend</dt><dd>React, Next.js, Vue.js, SvelteKit, Tailwind</dd>
+          <dt>Design</dt><dd>Figma, Affinity, Framer, design systems, prototyping, accessibility</dd>
+        </dl>
+      </section>
+
+      <footer class="cell s6 foot">
+        <span>Cultivate diligently</span>
+        <span class="dim" id="clock">Nairobi</span>
+        <button type="button" class="grid-toggle" aria-pressed="false" aria-keyshortcuts="g">Grid <kbd>G</kbd></button>
+      </footer>
+    </div>
+
+    <div class="overlay" aria-hidden="true" hidden><div class="grid"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  </body>
+</html>

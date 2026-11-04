@@ -1,0 +1,431 @@
+/* Shared by both concepts: Tajji's public brand palette, device frames,
+   and the small UI kit the rebuilt app screens are drawn with. Screens
+   are generic illustrations, not captures of the real apps. */
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
+
+:root {
+  --tj-navy: #04054d;
+  --tj-navy-70: #02032e;
+  --tj-navy-30: #686994;
+  --tj-gold: #e88c00;
+  --tj-gold-light: #fba018;
+  --tj-gold-10: #f6d199;
+  --tj-charcoal: #1f1f1f;
+  --tj-grey: #797979;
+  --tj-line: #e4e4e4;
+  --tj-cream: #f1f1f1;
+  --tj-white: #ffffff;
+  --tj-green: #24a148;
+  --tj-red: #ca3112;
+  --tj-font: 'Satoshi', system-ui, sans-serif;
+}
+
+/* Device frames. Everything inside scales with the frame through
+   container units, so a frame can sit in any grid cell. (Container
+   units resolve against an ancestor container, so the scale is set on
+   the frame's children, not the frame itself.) */
+.device {
+  container-type: inline-size;
+  position: relative;
+  overflow: hidden;
+  background: var(--tj-cream);
+  color: var(--tj-charcoal);
+  font-family: var(--tj-font);
+}
+.device-phone {
+  aspect-ratio: 9 / 19;
+  border-radius: 14% / 6.6%;
+  box-shadow: 0 0 0 5px #111, 0 0 0 6px #3a3a3a, 0 24px 48px -16px rgba(0, 0, 0, .35);
+}
+.device-phone > * {
+  font-size: calc(100cqi / 24);
+}
+.device-phone::before {
+  /* dynamic island */
+  content: '';
+  position: absolute;
+  z-index: 3;
+  top: 1.4%;
+  left: 50%;
+  width: 30%;
+  height: 3.6%;
+  translate: -50% 0;
+  border-radius: 99px;
+  background: #111;
+}
+.device-browser {
+  aspect-ratio: 16 / 10.5;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .12), 0 24px 48px -16px rgba(0, 0, 0, .3);
+  display: flex;
+  flex-direction: column;
+}
+.device-browser > * {
+  font-size: calc(100cqi / 56);
+}
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  padding: .7em 1em;
+  background: #e9e9e9;
+  border-bottom: 1px solid #d6d6d6;
+}
+.browser-bar i {
+  width: .75em;
+  height: .75em;
+  border-radius: 50%;
+  background: #cfcfcf;
+}
+.browser-bar span {
+  flex: 1;
+  margin-left: 1em;
+  padding: .25em .8em;
+  border-radius: .5em;
+  background: #fff;
+  color: var(--tj-grey);
+  font-size: .9em;
+  text-align: center;
+}
+.device-body {
+  position: absolute;
+  inset: 0;
+}
+.device-browser .device-body {
+  position: relative;
+  flex: 1;
+}
+
+/* A screen fills the device body; several can be stacked and one shown
+   at a time (data-active). */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .9em;
+  padding: 3.6em 1.4em 1.4em;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .35s ease, translate .45s cubic-bezier(.19, 1, .22, 1), visibility 0s linear .35s;
+  translate: 0 .6em;
+}
+.screen[data-active] {
+  opacity: 1;
+  visibility: visible;
+  translate: 0 0;
+  transition-delay: 0s;
+}
+.device-browser .screen {
+  padding: 1.8em 2.2em;
+}
+.screen.is-navy {
+  background: var(--tj-navy);
+  color: var(--tj-white);
+}
+
+/* Mini UI kit */
+.ui-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+}
+.ui-eyebrow {
+  font-size: .78em;
+  color: var(--tj-grey);
+}
+.is-navy .ui-eyebrow {
+  color: var(--tj-navy-30);
+}
+.ui-title {
+  margin: 0;
+  font-size: 1.35em;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+}
+.ui-big {
+  font-size: 2em;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+}
+.ui-card {
+  padding: 1em;
+  border-radius: 1em;
+  background: var(--tj-white);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+}
+.is-navy .ui-card {
+  background: rgba(255, 255, 255, .08);
+}
+.ui-bar {
+  height: .45em;
+  border-radius: 99px;
+  background: var(--tj-line);
+  overflow: hidden;
+}
+.ui-bar > b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--tj-gold);
+}
+.ui-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .8em;
+  padding: .65em 0;
+  border-bottom: 1px solid var(--tj-line);
+  font-size: .92em;
+}
+.ui-row:last-child {
+  border-bottom: 0;
+}
+.ui-row small {
+  display: block;
+  color: var(--tj-grey);
+  font-size: .85em;
+}
+.ui-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .3em;
+  padding: .2em .6em;
+  border-radius: 99px;
+  background: var(--tj-cream);
+  font-size: .78em;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.ui-chip.is-red { background: #fbe4df; color: var(--tj-red); }
+.ui-chip.is-green { background: #def3e4; color: var(--tj-green); }
+.ui-chip.is-gold { background: var(--tj-gold-10); color: #7a4a00; }
+.ui-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .4em;
+  width: 100%;
+  padding: .85em 1em;
+  border: 0;
+  border-radius: .8em;
+  background: var(--tj-gold);
+  color: var(--tj-navy-70);
+  font: 700 1em var(--tj-font);
+  cursor: pointer;
+}
+.ui-btn.is-navy {
+  background: var(--tj-navy);
+  color: var(--tj-white);
+}
+.ui-btn.is-ghost {
+  background: transparent;
+  color: inherit;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+.ui-field {
+  display: flex;
+  flex-direction: column;
+  gap: .2em;
+  padding: .6em .8em;
+  border-radius: .7em;
+  background: var(--tj-white);
+  box-shadow: inset 0 0 0 1px var(--tj-line);
+  font-size: .92em;
+}
+.ui-field small {
+  color: var(--tj-grey);
+  font-size: .8em;
+}
+.ui-seg {
+  display: flex;
+  gap: .4em;
+}
+.ui-seg .ui-chip {
+  flex: 1;
+  justify-content: center;
+  padding: .5em;
+  background: var(--tj-white);
+  box-shadow: inset 0 0 0 1px var(--tj-line);
+}
+.ui-seg .ui-chip[aria-pressed='true'] {
+  background: var(--tj-navy);
+  color: var(--tj-white);
+  box-shadow: none;
+}
+.ui-check {
+  display: grid;
+  place-items: center;
+  width: 4em;
+  height: 4em;
+  margin: 1.5em auto .5em;
+  border-radius: 50%;
+  background: var(--tj-green);
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: 700;
+}
+.ui-grow {
+  flex: 1;
+}
+.ui-muted {
+  color: var(--tj-grey);
+}
+.ui-center {
+  text-align: center;
+}
+.ui-split {
+  display: grid;
+  grid-template-columns: 11em 1fr;
+  gap: 1.6em;
+  height: 100%;
+}
+.ui-side {
+  display: flex;
+  flex-direction: column;
+  gap: .3em;
+  padding-right: 1.2em;
+  border-right: 1px solid var(--tj-line);
+  font-size: .95em;
+}
+.ui-side b {
+  margin-bottom: .8em;
+}
+.ui-side span {
+  padding: .45em .7em;
+  border-radius: .5em;
+  color: var(--tj-grey);
+}
+.ui-side span[aria-current] {
+  background: var(--tj-white);
+  color: var(--tj-charcoal);
+  font-weight: 500;
+}
+.ui-steps {
+  display: flex;
+  gap: .4em;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ui-steps button {
+  display: flex;
+  align-items: center;
+  gap: .45em;
+  padding: .35em .75em .35em .4em;
+  border: 0;
+  border-radius: 99px;
+  background: transparent;
+  color: var(--tj-grey);
+  font: 500 .9em var(--tj-font);
+  cursor: pointer;
+}
+.ui-steps button i {
+  display: grid;
+  place-items: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 50%;
+  background: var(--tj-line);
+  font-style: normal;
+  font-size: .85em;
+}
+.ui-steps button[aria-current] {
+  background: var(--tj-white);
+  color: var(--tj-charcoal);
+}
+.ui-steps button[aria-current] i,
+.ui-steps button.is-done i {
+  background: var(--tj-navy);
+  color: #fff;
+}
+.ui-tiers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .8em;
+}
+.ui-tier {
+  display: flex;
+  flex-direction: column;
+  gap: .3em;
+  padding: 1em;
+  border: 0;
+  border-radius: .9em;
+  background: var(--tj-white);
+  box-shadow: inset 0 0 0 1px var(--tj-line);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ui-tier[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 2px var(--tj-gold);
+}
+.ui-swatches {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: .6em;
+}
+.ui-swatches i {
+  aspect-ratio: 1;
+  border-radius: .7em;
+}
+.ui-doc i {
+  display: block;
+  height: .5em;
+  margin: .55em 0;
+  border-radius: 99px;
+  background: var(--tj-line);
+}
+
+/* Swipe-to-pay (Jirani) */
+.ui-swipe {
+  position: relative;
+  height: 3.4em;
+  border-radius: 99px;
+  background: var(--tj-navy);
+  color: #fff;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+.ui-swipe span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 500;
+  font-size: .92em;
+  opacity: calc(1 - var(--p, 0) * 1.6);
+}
+.ui-swipe button {
+  position: absolute;
+  top: .3em;
+  left: .3em;
+  width: 2.8em;
+  height: 2.8em;
+  border: 0;
+  border-radius: 50%;
+  background: var(--tj-gold);
+  color: var(--tj-navy-70);
+  font: 700 1.1em var(--tj-font);
+  cursor: grab;
+  /* set in px by screens.js while dragging */
+  translate: var(--x, 0px) 0;
+}
+.ui-swipe.is-done {
+  background: var(--tj-green);
+}
+.ui-swipe.is-done button {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen {
+    transition: none;
+  }
+}
