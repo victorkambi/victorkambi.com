@@ -1,4 +1,5 @@
 .DS_Store
+# Leftovers from the old Astro build; safe to delete locally.
 node_modules/
 dist/
 .astro/
