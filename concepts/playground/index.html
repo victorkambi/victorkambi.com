@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-view="home">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,26 +11,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../shared/brand.css" />
     <link rel="stylesheet" href="styles.css" />
+    <script>
+      // Theme and view before first paint.
+      try { const t = localStorage.getItem('pg-theme'); if (t) document.documentElement.dataset.theme = t; } catch {}
+      const v = (location.hash.match(/^#\/(about|case)/) || [])[1];
+      if (v) document.documentElement.dataset.view = v;
+    </script>
     <script src="../shared/screens.js" defer></script>
     <script src="script.js" defer></script>
   </head>
   <body>
+    <div class="intro" hidden aria-hidden="true">
+      <p class="intro-type" data-intro-text>Habari, I’m Victor</p>
+      <button type="button" class="intro-skip mono">Skip intro</button>
+    </div>
+
     <header class="masthead" id="top">
       <div class="mh-left">
-        <a class="wordmark" href="#top">Victor Kambi</a>
-        <p class="mono">Nairobi · <span id="clock">--:--</span></p>
+        <a class="wordmark" href="#/">Victor Kambi</a>
+        <p class="mono" data-clock>Nairobi · --:--</p>
       </div>
       <p class="statement">I’m a product engineer working where backend systems and design systems meet. Currently building the property platform at <a href="https://tajji.io" target="_blank" rel="noopener">Tajji</a>: two apps, a web console, and the kit underneath. Previously <a href="https://emmerce.io" target="_blank" rel="noopener">Emmerce</a>.</p>
     </header>
 
-    <nav class="bar mono" aria-label="Sections">
-      <a href="#work">Work</a>
-      <a href="#playground">Playground</a>
-      <a href="#about">About</a>
+    <nav class="bar mono" aria-label="Site">
+      <a href="#/" data-view-link="home">Home</a>
+      <a href="#/case/bomaos" data-view-link="case">Case study</a>
+      <a href="#/about" data-view-link="about">About</a>
       <a href="/site/Victor_Kambi_2026_CV.pdf" target="_blank" rel="noopener">CV ↗</a>
+      <button type="button" class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false"><span data-theme-label>Dark</span></button>
     </nav>
 
     <main>
+      <div class="view" data-view="home">
       <section class="featured" id="work" aria-labelledby="work-h">
         <div class="section-head">
           <h2 id="work-h"><span class="muted">Featured work:</span> products I designed and built end to end. Tap them, they work.</h2>
@@ -47,7 +60,8 @@
             <p class="hint mono">Tap “Record payment” and follow it to the ledger.</p>
             <div class="card-actions">
               <button type="button" class="pill" data-details aria-expanded="false">Details +</button>
-              <a class="pill" href="https://play.google.com/store/apps/details?id=io.tajji.bomaos" target="_blank" rel="noopener">Google Play ↗</a>
+              <a class="pill pill-solid" href="#/case/bomaos">Case study →</a>
+              <a class="pill" href="https://play.google.com/store/apps/details?id=io.tajji.bomaos" target="_blank" rel="noopener">Play ↗</a>
             </div>
             <dl class="details" hidden><dt>Role</dt><dd>Design and engineering, end to end</dd><dt>Stack</dt><dd>Kotlin, Compose Multiplatform, Sceptre</dd><dt>Year</dt><dd>2025, v1.0</dd></dl>
           </li>
@@ -164,20 +178,173 @@
         </div>
       </section>
 
-      <section class="about" id="about" aria-labelledby="about-h">
-        <h2 id="about-h" class="muted">About</h2>
-        <div class="about-text">
-          <p>My approach to design is making the mechanical parts have feeling. Interaction should be enjoyable and fun without compromising performance or efficiency.</p>
-          <p>Outside work, you’ll usually find me reading philosophy, drawing, or watching and reviewing films.</p>
+      </div>
+
+      <!-- Case study: sticky index with scrollspy, mono gutter labels,
+           selection-box callouts named after real artefacts. -->
+      <div class="view" data-view="case" hidden>
+        <div class="case">
+          <nav class="case-index mono" aria-label="Case study sections">
+            <a href="#cs-overview">Overview</a>
+            <a href="#cs-challenge">Challenge</a>
+            <a href="#cs-people">People</a>
+            <a href="#cs-system">System</a>
+            <a href="#cs-decisions">Decisions</a>
+            <a href="#cs-money">Money</a>
+            <a href="#cs-outcome">Outcome</a>
+          </nav>
+
+          <div class="case-body">
+            <div class="case-hero" aria-label="BomaOS and Jirani, illustrative screens">
+              <div data-device="phone" data-screens="bomaos-overview,bomaos-record,bomaos-receipt" style="--lift: 0"></div>
+              <div data-device="phone" data-screens="bomaos-record,bomaos-receipt,bomaos-overview" style="--lift: 2"></div>
+              <div data-device="phone" data-screens="jirani-pay" style="--lift: .6"></div>
+              <div data-device="phone" data-screens="identity-verify" style="--lift: 2.6"></div>
+            </div>
+
+            <section class="cs-row" id="cs-overview" data-spy>
+              <p class="cs-label mono">Overview</p>
+              <div class="cs-main">
+                <h2 class="cs-title">BomaOS: property operations, from the first lease to the last shilling.</h2>
+                <p>BomaOS is Tajji’s app for landlords and property managers, with Jirani as its tenant-side counterpart and the BomaOS Console on the web. I work across all three: the product design, the Kotlin Multiplatform apps, the backend, and Sceptre, the design system underneath.</p>
+                <dl class="meta">
+                  <div><dt>Role</dt><dd>Product engineer: design, mobile, backend</dd></div>
+                  <div><dt>Platforms</dt><dd>Android, iOS, desktop, web console</dd></div>
+                  <div><dt>Stack</dt><dd>Kotlin Multiplatform, Compose, Spring Boot, PostgreSQL, Temporal</dd></div>
+                  <div><dt>Timeline</dt><dd>2023 – now · v1.0 on Google Play in 2025</dd></div>
+                </dl>
+              </div>
+            </section>
+
+            <section class="cs-row" id="cs-challenge" data-spy>
+              <p class="cs-label mono">The challenge</p>
+              <div class="cs-main">
+                <h3 class="cs-h">Rent is many small, real-world events.</h3>
+                <p>A lease is signed, a tenant pays by M-Pesa, someone else pays by bank transfer, a third pays late. Each one needs recording, matching and explaining, and the person doing it is usually also fixing the plumbing.</p>
+                <div class="boxes2">
+                  <figure class="sel"><figcaption class="tag mono">LANDLORD.MD</figcaption><p class="sel-h">Knows every unit by heart.</p><p>But not today’s balance without opening three apps and a notebook.</p></figure>
+                  <figure class="sel"><figcaption class="tag mono is-gold">TENANT.MD</figcaption><p class="sel-h">Pays on time.</p><p>But has nothing official to point to when someone asks for proof.</p></figure>
+                </div>
+              </div>
+            </section>
+
+            <section class="cs-row" id="cs-people" data-spy>
+              <p class="cs-label mono">People</p>
+              <div class="cs-main">
+                <h3 class="cs-h">One lease, three surfaces.</h3>
+                <p>Each person gets the surface that fits how they work, and all three read and write the same records.</p>
+                <ul class="trio">
+                  <li><b>Landlords and managers</b><span>BomaOS on their phone, for collections, units and people.</span></li>
+                  <li><b>Tenants</b><span>Jirani, to claim a lease, verify, and pay.</span></li>
+                  <li><b>Operators</b><span>The BomaOS Console on the web, to commission portfolios and handle billing.</span></li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="cs-row" id="cs-system" data-spy>
+              <p class="cs-label mono">System</p>
+              <div class="cs-main">
+                <h3 class="cs-h">Shared all the way down.</h3>
+                <p>Both apps live in one Kotlin Multiplatform build and use the same libraries as project dependencies, so a library change reaches BomaOS and Jirani in the same commit.</p>
+                <div class="diagram" role="img" aria-label="BomaOS, Jirani and the Console share Sceptre, identity, payments and auth libraries">
+                  <div class="sel d-app"><span class="tag mono">BOMAOS</span>Android · iOS · Desktop</div>
+                  <div class="sel d-app"><span class="tag mono">JIRANI</span>Tenant app</div>
+                  <div class="sel d-app"><span class="tag mono">CONSOLE</span>Next.js</div>
+                  <div class="sel d-lib"><span class="tag mono is-gold">SCEPTRE</span>Design system: tokens, components, motion</div>
+                  <div class="sel d-lib"><span class="tag mono">IDENTITY</span>KYC · KYB</div>
+                  <div class="sel d-lib"><span class="tag mono">PAYMENTS</span>Paystack · M-Pesa</div>
+                  <div class="sel d-lib"><span class="tag mono">SENTINEL</span>OIDC sign-in</div>
+                  <div class="sel d-core"><span class="tag mono">CORE</span>Kotlin + Spring services, one OpenAPI contract</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="cs-row" id="cs-decisions" data-spy>
+              <p class="cs-label mono">Decisions</p>
+              <div class="cs-main">
+                <h3 class="cs-h">Small choices that carry weight.</h3>
+                <div class="annotated">
+                  <div data-device="phone" data-screens="bomaos-record,bomaos-receipt,bomaos-overview"></div>
+                  <ol class="ann">
+                    <li><span class="mono">01/</span><b>M-Pesa is the default.</b> It’s how most rent in Kenya actually moves, so it’s pre-selected and one tap away.</li>
+                    <li><span class="mono">02/</span><b>Three fields, not ten.</b> Amount, method, reference. Everything else is inferred from the lease.</li>
+                    <li><span class="mono">03/</span><b>Specs before screens.</b> Behaviours are written down as scenarios first, so the app, the console and the API agree on what “paid” means.</li>
+                    <li><span class="mono">04/</span><b>Money moves on purpose.</b> In Jirani, paying is a swipe, never a stray tap.</li>
+                  </ol>
+                </div>
+              </div>
+            </section>
+
+            <section class="cs-row" id="cs-money" data-spy>
+              <p class="cs-label mono">Money</p>
+              <div class="cs-main">
+                <h3 class="cs-h">A ledger first, a screen second.</h3>
+                <p>Every rent payment posts as balanced double-entry lines before it appears as a number on anyone’s phone. That’s what lets a landlord, a tenant and an operator see the same truth.</p>
+                <figure class="sel brief"><figcaption class="tag mono">BRIEF.TXT</figcaption><p>Try it: the <a href="#/" data-goto="playground">Ledger toy</a> in the Playground bills a tenant and takes a payment, live.</p></figure>
+              </div>
+            </section>
+
+            <section class="cs-row" id="cs-outcome" data-spy>
+              <p class="cs-label mono">Outcome</p>
+              <div class="cs-main">
+                <h3 class="cs-h">Shipped, and growing.</h3>
+                <p>BomaOS v1.0 shipped on Google Play in 2025. Jirani and the BomaOS Console followed in 2026, on the same shared foundation.</p>
+                <p class="card-actions"><a class="pill pill-solid" href="https://play.google.com/store/apps/details?id=io.tajji.bomaos" target="_blank" rel="noopener">BomaOS on Google Play ↗</a><a class="pill" href="#/">← All work</a></p>
+              </div>
+            </section>
+          </div>
         </div>
-        <dl class="timeline">
-          <dt>Product Engineer · Tajji</dt><dd class="mono">2024 – now</dd>
-          <dt>Founding Engineer · Tajji</dt><dd class="mono">2023 – 24</dd>
-          <dt>Frontend Engineer Intern · Emmerce</dt><dd class="mono">2022</dd>
-          <dt>BSc Computer Science · Moi University</dt><dd class="mono">Eldoret</dd>
-          <dt>UX Design Pathway · IBM SkillsBuild</dt><dd class="mono">now</dd>
-        </dl>
-      </section>
+      </div>
+
+      <!-- About: 50 / 50. Mono gutter labels on the left; a sticky toy on the right. -->
+      <div class="view" data-view="about" hidden>
+        <div class="about2">
+          <div class="about-left">
+            <section class="ab-row">
+              <p class="cs-label mono">Whoami?</p>
+              <div>
+                <p class="lead">I’m Victor, a product engineer in Nairobi. I work where backend systems and design systems meet, turning how a product should feel into systems that keep it that way at scale.</p>
+                <p>I like the mechanical parts to have feeling. Interaction should be enjoyable and fun without compromising performance or efficiency.</p>
+              </div>
+            </section>
+            <section class="ab-row">
+              <p class="cs-label mono">Experience</p>
+              <dl class="xp">
+                <dt>Product Engineer <span class="mono muted">2024 – now</span></dt><dd>Tajji Real Estate. Backend, design system and product experience.</dd>
+                <dt>Founding Engineer <span class="mono muted">2023 – 24</span></dt><dd>Tajji Real Estate. Initial architecture and the first versions of the platform.</dd>
+                <dt>Frontend Engineer Intern <span class="mono muted">2022</span></dt><dd>Emmerce. Responsive sites and campaigns for consumer brands.</dd>
+              </dl>
+            </section>
+            <section class="ab-row">
+              <p class="cs-label mono">Education</p>
+              <dl class="xp">
+                <dt>BSc Computer Science</dt><dd>Moi University, Eldoret</dd>
+                <dt>UX Design Pathway <span class="mono muted">now</span></dt><dd>IBM SkillsBuild</dd>
+              </dl>
+            </section>
+            <section class="ab-row">
+              <p class="cs-label mono">Tools ↘</p>
+              <div class="ticker" aria-label="Kotlin, Compose Multiplatform, Spring Boot, Temporal, PostgreSQL, TypeScript, Next.js, SvelteKit, Swift, Figma, Affinity, Framer, Kubernetes">
+                <div class="ticker-track mono" aria-hidden="true"><span>Kotlin</span><span>Compose Multiplatform</span><span>Spring Boot</span><span>Temporal</span><span>PostgreSQL</span><span>TypeScript</span><span>Next.js</span><span>SvelteKit</span><span>Swift</span><span>Figma</span><span>Affinity</span><span>Framer</span><span>Kubernetes</span></div>
+              </div>
+            </section>
+          </div>
+
+          <aside class="about-right">
+            <p class="beyond">Beyond<br />design</p>
+            <div class="beyond-body">
+              <p>Outside work, I’m usually reading philosophy, drawing, or watching and reviewing films.</p>
+              <div class="sky" data-sky>
+                <div class="sky-sun" aria-hidden="true"></div>
+                <div class="sky-ground" aria-hidden="true"></div>
+                <p class="sky-time mono" data-sky-time>12:00</p>
+              </div>
+              <label class="sky-range mono">Time of day in Nairobi <input type="range" min="0" max="1439" step="5" data-sky-range /></label>
+              <p class="mono muted sky-note">Equator day. Nairobi sits just south of the equator, so sunrise and sunset barely move all year: about 6:30 in the morning and 6:40 in the evening, give or take twenty minutes.</p>
+            </div>
+          </aside>
+        </div>
+      </div>
     </main>
 
     <footer class="foot">
@@ -192,6 +359,12 @@
         <p>Figma · Affinity · Framer</p>
       </div>
       <div class="foot-end">
+        <div class="word" aria-live="polite">
+          <p class="mono muted">Swahili word of the day</p>
+          <p class="word-term" data-word>boma</p>
+          <p class="mono muted" data-word-gloss>homestead, enclosure · the Boma in BomaOS</p>
+          <button type="button" class="link-btn" data-word-next>Show me another</button>
+        </div>
         <p class="mono muted">© 2026 · Cultivate diligently</p>
         <a class="pill" href="#top" aria-label="Back to top">↑</a>
       </div>

@@ -1,58 +1,76 @@
-// Systems list drives the "In use" devices; G toggles the grid overlay.
-const phone = document.querySelector('[data-device="phone"]');
-const browser = document.querySelector('[data-device="browser"]');
-const captions = {
-  phone: document.querySelector('[data-caption="phone"]'),
-  browser: document.querySelector('[data-caption="browser"]'),
-};
-const systemButtons = document.querySelectorAll('.systems button');
+// Rooms: #/ , #/work , #/systems(/<entry>) , #/about. Each room has its
+// own palette (styles.css); switching blends the palette, swaps the
+// shared header title and settles the new room's cells in order.
+const root = document.documentElement;
+const rooms = [...document.querySelectorAll('.room')];
+const title = document.querySelector('h1[data-title]');
+const links = document.querySelectorAll('[data-room-link]');
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+let current = null;
 
-function select(button) {
-  systemButtons.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
-  const name = button.querySelector('b').textContent;
-  if (button.dataset.phone) {
-    window.TajjiScreens.show(phone, button.dataset.phone);
-    captions.phone.textContent = name;
-  }
-  if (button.dataset.browser) {
-    window.TajjiScreens.show(browser, button.dataset.browser);
-    captions.browser.textContent = name;
-  }
+function parse() {
+  const [, room = 'home', anchor] = location.hash.match(/^#\/(\w*)\/?(\w*)/) || [];
+  return { room: rooms.some((r) => r.dataset.room === room) ? room : 'home', anchor };
 }
 
-systemButtons.forEach((button) => {
-  button.addEventListener('click', () => select(button));
-  button.addEventListener('mouseenter', () => select(button));
-  button.addEventListener('focus', () => select(button));
+function indexCells(room) {
+  let i = 0;
+  room.querySelectorAll(':scope > *').forEach((el) => {
+    if (el.classList.contains('entry')) el.querySelectorAll(':scope > *').forEach((c) => c.style.setProperty('--i', i++));
+    else el.style.setProperty('--i', i++);
+  });
+}
+
+function show(name, anchor, animate) {
+  const next = rooms.find((r) => r.dataset.room === name);
+  const prev = rooms.find((r) => !r.hidden);
+  links.forEach((l) => (l.dataset.roomLink === name ? l.setAttribute('aria-current', 'page') : l.removeAttribute('aria-current')));
+  root.dataset.room = name;
+  document.title = `${next.dataset.title} — Victor Kambi — Concept: Raster`;
+
+  const enter = () => {
+    rooms.forEach((r) => (r.hidden = r !== next));
+    title.textContent = next.dataset.title;
+    if (animate && !reduced.matches) {
+      title.classList.remove('is-swapping');
+      next.classList.remove('is-entering');
+      void next.offsetWidth;
+      title.classList.add('is-swapping');
+      next.classList.add('is-entering');
+    }
+    const target = anchor && document.getElementById(anchor);
+    if (target) target.scrollIntoView({ behavior: reduced.matches ? 'auto' : 'smooth', block: 'start' });
+    else if (animate) window.scrollTo({ top: 0 });
+    if (!overlay.hidden) sizeOverlay();
+  };
+
+  if (prev && prev !== next && animate && !reduced.matches) {
+    prev.classList.add('is-leaving');
+    setTimeout(() => {
+      prev.classList.remove('is-leaving');
+      enter();
+    }, 180);
+  } else {
+    enter();
+  }
+  current = name;
+}
+
+rooms.forEach(indexCells);
+window.addEventListener('hashchange', () => {
+  const { room, anchor } = parse();
+  show(room, anchor, room !== current);
 });
 
-// Tapping through a device updates its caption to match.
-const LABELS = {
-  'bomaos-overview': 'BomaOS · portfolio overview',
-  'bomaos-record': 'BomaOS · record a payment',
-  'bomaos-receipt': 'BomaOS · receipt and ledger entry',
-  'jirani-pay': 'Jirani · pay rent',
-  'identity-verify': 'Identity verification · ID scan',
-  'console-agreement': 'BomaOS Console · commissioning, agreement',
-  'console-plan': 'BomaOS Console · commissioning, plan',
-  'console-payment': 'BomaOS Console · commissioning, payment',
-  'console-welcome': 'BomaOS Console · commissioned',
-  'sceptre-tokens': 'Sceptre · tokens and type scale',
-};
-document.addEventListener('screenchange', (e) => {
-  const which = e.target === phone ? 'phone' : 'browser';
-  captions[which].textContent = LABELS[e.detail] ?? '';
-});
-
-// Stagger the entrance in reading order.
-document.querySelectorAll('.grid > .cell, .in-use > .cell').forEach((cell, i) => cell.style.setProperty('--i', i));
-
-// Grid overlay
+// Grid overlay (G)
 const overlay = document.querySelector('.overlay');
 const toggle = document.querySelector('.grid-toggle');
+function sizeOverlay() {
+  overlay.style.height = `${document.documentElement.scrollHeight}px`;
+}
 function setGrid(on) {
   overlay.hidden = !on;
-  overlay.style.height = `${document.documentElement.scrollHeight}px`;
+  if (on) sizeOverlay();
   toggle.setAttribute('aria-pressed', String(on));
 }
 toggle.addEventListener('click', () => setGrid(overlay.hidden));
@@ -63,8 +81,11 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Nairobi clock
-const clock = document.getElementById('clock');
+const clock = document.querySelector('[data-clock]');
 const fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Africa/Nairobi', hour: '2-digit', minute: '2-digit' });
 const tick = () => (clock.textContent = `Nairobi ${fmt.format(new Date())}`);
 tick();
 setInterval(tick, 30000);
+
+const initial = parse();
+show(initial.room, initial.anchor, true);

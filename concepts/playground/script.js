@@ -6,10 +6,16 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 );
 document.querySelectorAll('[data-enter]').forEach((el, i) => el.style.setProperty('--i', Math.min(i, 8)));
 
-// Nairobi clock
-const clock = document.getElementById('clock');
-const fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Africa/Nairobi', hour: '2-digit', minute: '2-digit', hour12: true });
-const tick = () => (clock.textContent = fmt.format(new Date()));
+// Clock: the visitor's own time, and Nairobi's when they differ.
+const clock = document.querySelector('[data-clock]');
+const here = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const city = (tz) => tz.split('/').pop().replace(/_/g, ' ');
+const fmt = (tz) => new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: true });
+const tick = () => {
+  const now = new Date();
+  const nbo = `Nairobi · ${fmt('Africa/Nairobi').format(now)}`;
+  clock.textContent = here === 'Africa/Nairobi' ? nbo : `${city(here)} · ${fmt(here).format(now)} — mine: ${nbo}`;
+};
 tick();
 setInterval(tick, 30000);
 
@@ -195,4 +201,171 @@ document.querySelectorAll('[data-type]').forEach((el) => {
   };
   [rentIn, svcIn, paidIn].forEach((el) => el.addEventListener('input', render));
   render();
+})();
+
+
+// ---------- v2 ----------
+const root = document.documentElement;
+const views = [...document.querySelectorAll('.view')];
+const viewLinks = document.querySelectorAll('[data-view-link]');
+
+function viewFromHash() {
+  const m = location.hash.match(/^#\/(about|case)/);
+  return m ? m[1] : 'home';
+}
+function applyView(name) {
+  views.forEach((v) => (v.hidden = v.dataset.view !== name));
+  root.dataset.view = name;
+  viewLinks.forEach((l) => (l.dataset.viewLink === name ? l.setAttribute('aria-current', 'page') : l.removeAttribute('aria-current')));
+}
+function go(name, scrollTarget) {
+  const update = () => {
+    applyView(name);
+    if (scrollTarget) document.getElementById(scrollTarget)?.scrollIntoView();
+    else window.scrollTo(0, 0);
+  };
+  // Same-document view transition where supported; plain swap otherwise.
+  if (!document.startViewTransition || reduced) update();
+  else {
+    const vt = document.startViewTransition(update);
+    // A skipped transition (e.g. a hidden tab) still runs update(); ignore the rejection.
+    vt.ready.catch(() => {});
+    vt.finished.catch(() => {});
+  }
+}
+window.addEventListener('hashchange', () => {
+  // In-page anchors (#cs-…) are handled by the browser; only routes switch views.
+  if (!location.hash.startsWith('#/') && location.hash !== '') return;
+  go(viewFromHash());
+});
+applyView(viewFromHash());
+
+// "Ledger toy" link in the case study jumps back to the Playground.
+document.querySelectorAll('[data-goto]').forEach((a) =>
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    history.pushState(null, '', '#/');
+    go('home', a.dataset.goto);
+  }),
+);
+
+// Theme toggle
+const themeBtn = document.querySelector('.theme-toggle');
+const themeLabel = document.querySelector('[data-theme-label]');
+function setTheme(t) {
+  root.dataset.theme = t;
+  themeBtn.setAttribute('aria-pressed', String(t === 'dark'));
+  themeLabel.textContent = t === 'dark' ? 'Light' : 'Dark';
+  try { localStorage.setItem('pg-theme', t); } catch {}
+}
+setTheme(root.dataset.theme === 'dark' ? 'dark' : 'light');
+themeBtn.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+
+// Intro: once per visit, skippable, never under reduced motion.
+(() => {
+  const intro = document.querySelector('.intro');
+  let seen = false;
+  try { seen = sessionStorage.getItem('pg-intro') === '1'; } catch {}
+  if (seen || reduced || location.hash.length > 2) return;
+  const text = intro.querySelector('[data-intro-text]');
+  text.innerHTML = [...text.textContent]
+    .map((ch, i) => {
+      const r = () => (Math.random() - 0.5);
+      return ch === ' ' ? ' ' : `<span style="--i:${i};--dx:${r() * 60}vw;--dy:${r() * 60}vh;--rot:${r() * 140}deg">${ch}</span>`;
+    })
+    .join('');
+  intro.hidden = false;
+  const done = () => {
+    intro.classList.add('is-done');
+    try { sessionStorage.setItem('pg-intro', '1'); } catch {}
+  };
+  intro.querySelector('.intro-skip').addEventListener('click', done);
+  document.addEventListener('keydown', done, { once: true });
+  setTimeout(done, 2400);
+})();
+
+// Case study scrollspy
+(() => {
+  const links = new Map([...document.querySelectorAll('.case-index a')].map((a) => [a.hash.slice(1), a]));
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        links.forEach((a) => a.removeAttribute('aria-current'));
+        links.get(e.target.id)?.setAttribute('aria-current', 'true');
+      });
+    },
+    { rootMargin: '-35% 0px -60% 0px' },
+  );
+  document.querySelectorAll('[data-spy]').forEach((s) => spy.observe(s));
+  links.forEach((a, id) =>
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById(id).scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+    }),
+  );
+  links.values().next().value?.setAttribute('aria-current', 'true');
+})();
+
+// Ticker: duplicate the run so the loop is seamless.
+document.querySelectorAll('.ticker-track').forEach((t) => (t.innerHTML += t.innerHTML));
+
+// Equator day: drag through a day in Nairobi.
+(() => {
+  const sky = document.querySelector('[data-sky]');
+  const range = document.querySelector('[data-sky-range]');
+  const label = document.querySelector('[data-sky-time]');
+  if (!sky) return;
+  const RISE = 6.5 * 60, SET = 18.67 * 60;
+  const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  const rgb = (c) => `rgb(${c.join(',')})`;
+  const NIGHT = [12, 16, 48], DAWN = [244, 160, 110], DAY = [140, 196, 236];
+  const render = () => {
+    const m = +range.value;
+    const h = String(Math.floor(m / 60)).padStart(2, '0');
+    label.textContent = `${h}:${String(m % 60).padStart(2, '0')}`;
+    const day = (m - RISE) / (SET - RISE);
+    const edge = Math.min(Math.abs(m - RISE), Math.abs(m - SET)) / 60;
+    let c;
+    if (day < 0 || day > 1) c = edge < 1 ? mix(DAWN, NIGHT, edge) : NIGHT;
+    else c = edge < 1 ? mix(DAWN, DAY, edge) : DAY;
+    sky.style.setProperty('--sky', rgb(c));
+    sky.style.setProperty('--ground', rgb(mix([20, 24, 20], [47, 59, 42], day < 0 || day > 1 ? 0 : 1 - Math.max(0, 1 - edge))));
+    const t = Math.min(Math.max(day, 0), 1);
+    sky.style.setProperty('--sun-x', 0.1 + t * 0.8);
+    sky.style.setProperty('--sun-y', 0.72 - Math.sin(t * Math.PI) * 0.55);
+    sky.style.setProperty('--sun-o', day < -0.02 || day > 1.02 ? 0 : 1);
+    sky.style.setProperty('--sun', edge < 1 ? '#ffb15c' : '#ffe08a');
+  };
+  const nbo = new Intl.DateTimeFormat('en-GB', { timeZone: 'Africa/Nairobi', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(new Date());
+  range.value = +nbo.find((p) => p.type === 'hour').value * 60 + +nbo.find((p) => p.type === 'minute').value;
+  range.addEventListener('input', render);
+  render();
+})();
+
+// Swahili word of the day
+(() => {
+  const WORDS = [
+    ['boma', 'homestead, enclosure · the Boma in BomaOS'],
+    ['jirani', 'neighbour · the tenant app'],
+    ['nyumba', 'house, home'],
+    ['kodi', 'rent; also tax'],
+    ['mtaa', 'neighbourhood, street'],
+    ['ufunguo', 'key'],
+    ['karibu', 'welcome; also near'],
+    ['mpangaji', 'tenant'],
+  ];
+  const term = document.querySelector('[data-word]');
+  const gloss = document.querySelector('[data-word-gloss]');
+  const start = new Date(new Date().getFullYear(), 0, 0);
+  let i = Math.floor((Date.now() - start) / 864e5) % WORDS.length;
+  const show = () => {
+    term.textContent = WORDS[i][0];
+    gloss.textContent = WORDS[i][1];
+  };
+  document.querySelector('[data-word-next]').addEventListener('click', () => {
+    i = (i + 1) % WORDS.length;
+    show();
+  });
+  show();
 })();
